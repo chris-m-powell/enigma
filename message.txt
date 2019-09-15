@@ -1,0 +1,9 @@
+[Success]: Key generated.
+Enter filename
+[ERROR]: Invalid filename.
+[SUCCESS]: Plaintext read from file.
+[SUCCESS]: Encryption complete.
+[SUCCESS]: Ciphertext written to file.
+[SUCCESS]: Ciphertext read to file.
+[SUCCESS]: Decryption complete.
+[SUCCESS]: Plaintext written to file.
