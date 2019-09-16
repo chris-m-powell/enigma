@@ -1,23 +1,18 @@
 #include "crypto.h"
 //--------------------------------------------    
-void Crypto::StartUp()
-{
+void Crypto::StartUp() {
   Message::ReadMessagesFromFile();
   int i;
   do {
     DisplayCipherMenu();
     cin >> i;
     switch(i) {
-      case 1: {
-        Rotn x;
-        SelectOperation<Rotn>(i, x);
+      case 1: 
+        SelectOperation<Rotn>(i);
         break;
-      }
-      case 2: {
-        Cryptogram x;
-        SelectOperation<Cryptogram>(i, x);
+      case 2:
+        SelectOperation<Cryptogram>(i);
         break;
-      }
       case 0:
         UI::Clear();
         return;
@@ -26,9 +21,9 @@ void Crypto::StartUp()
 }
 //--------------------------------------------
 template <class T>
-void Crypto::SelectOperation(int i, T& x)
-{
+void Crypto::SelectOperation(int i) {
   int j;
+  T x;
   do {
     DisplayOperationMenu();
     cin >> j;
@@ -37,10 +32,10 @@ void Crypto::SelectOperation(int i, T& x)
         x.InitKeyGen();
         break;
       case 2:
-	    x.InitEncrypt(x);
+	    x.InitEncrypt();
         break;
       case 3:
-        x.InitDecrypt(x);
+        x.InitDecrypt();
         break;
       case 4:
         x.Print(x);

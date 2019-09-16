@@ -7,12 +7,18 @@ class Cryptogram: public Cipher<Cryptogram> //CRTP: 'Cryptogram' inherits from '
   private:
     string Key;
   public:
-    Cryptogram() {Key = " "; Name = "Cryptogram"; Type = 'S';}
-    Cryptogram(string k) {Key = k; Name = "Cryptogram"; Type = 'S';};
+    Cryptogram() { Key = " "; Name = "Cryptogram"; Type = 'S'; }
+    Cryptogram(string k) { Key = k; Name = "Cryptogram"; Type = 'S'; };
     
     string KeyGen();
-    string GetKey() const {return Key;};
-    void SetKey(string k) {Key = k;}
+    string GetKey() const { return Key; };
+    bool SetKey(string k) { 
+      while (k != " ") {
+        Key = k;
+        return true;
+      } 
+      return false;
+    }
     
     void Encrypt();
     /* string WordToLower(string); */

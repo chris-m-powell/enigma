@@ -1,18 +1,11 @@
 #include "cryptogram.h"
-//------------------------------------------------- 
+//-------------------------------------------------
 string Cryptogram::KeyGen() {
-  UI::Prompt(msg::EnterFilename);
-  string f = GetFilename();
-  /* if (!ReadFile(GetFilename())) { */ 
-    /* UI::Alert(msg::InvalidFilename, 1.5); */
-    /* return; */
-  /* } */
-  /* string k; */
-  /* for (int i=0; SourceBuffer.size(); i++) { */
-    /* k = k + SourceBuffer[i]; */
-  /* } */
-  /* return k; */
-  return f;
+  ifstream fin;
+  GetFile(GetFilename("key"), fin);
+  if (fin.is_open()) {
+    return string ((istreambuf_iterator<char>(fin) ), (istreambuf_iterator<char>()));;
+  }
 }
 //------------------------------------------------- 
 void Cryptogram::Encrypt() {
