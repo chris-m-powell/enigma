@@ -1,7 +1,7 @@
 #include "crypto.h"
 //------------------------------------------------- 
 int main() {
-  Crypto::StartUp();
+  Crypto::startUp();
   return 0;
 }
 

@@ -13,7 +13,7 @@ typedef Message msg;
 //-------------------------------------------- 
 class Message {
   public:
-    static void ReadMessagesFromFile();
+    static void readMessagesFromFile();
     static string KeyGenSuccess;
     static string EnterFilename;
     static string InvalidFilename;

@@ -11,7 +11,7 @@ string msg::CiphertextReadSuccess;
 string msg::DecryptionSuccess;
 string msg::PlaintextWriteSuccess;
 //--------------------------------------------    
-void Message::ReadMessagesFromFile() {
+void Message::readMessagesFromFile() {
   ifstream fin;
   fin.open("message.txt");
   getline(fin, msg::KeyGenSuccess);

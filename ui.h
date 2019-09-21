@@ -13,25 +13,25 @@ class UI
   private:
     static int DividerLength;
   public:
-    static void Clear() {cout << "\033[2J\033[1;1H";} const
-    static void Clearline() {cout << "\033[A\033[2K";} const
-    static void Divider() {cout << string(DividerLength, '-') << endl;} const
-    static void Header(string h) {
-      Clear();
-      Divider(); 
+    static void clear() {cout << "\033[2J\033[1;1H";} const
+    static void clearline() {cout << "\033[A\033[2K";} const
+    static void divider() {cout << string(DividerLength, '-') << endl;} const
+    static void header(string h) {
+      clear();
+      divider(); 
       cout << setw(DividerLength/2 + h.length()/2) << h << endl; 
-      Divider();
+      divider();
     }
-    static void Option(int x, string s) {
+    static void option(int x, string s) {
       cout << "[" << x << "]" << setw(DividerLength - 3) << s << endl;
     }
-    static void Back(int x, string s) {
-      Divider(); 
+    static void back(int x, string s) {
+      divider(); 
       cout << "[" << x << "]" << setw(DividerLength - 3) << s << endl;
-      Divider();
+      divider();
     }
-    static void Prompt(string m) {cout << m << ": ";}
-    static void Alert(string m, int t) {cout << m << endl; sleep(t); Clearline();}
+    static void prompt(string m) {cout << m << ": ";}
+    static void alert(string m, int t) {cout << m << endl; sleep(t); clearline();}
 };
 //--------------------------------------------  
 #endif

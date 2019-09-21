@@ -10,9 +10,9 @@ class Cryptogram: public Cipher<Cryptogram> //CRTP: 'Cryptogram' inherits from '
     Cryptogram() { Key = " "; Name = "Cryptogram"; Type = 'S'; }
     Cryptogram(string k) { Key = k; Name = "Cryptogram"; Type = 'S'; };
     
-    string KeyGen();
-    string GetKey() const { return Key; };
-    bool SetKey(string k) { 
+    string keyGen();
+    string getKey() const { return Key; };
+    bool setKey(string k) { 
       while (k != " ") {
         Key = k;
         return true;
@@ -20,10 +20,10 @@ class Cryptogram: public Cipher<Cryptogram> //CRTP: 'Cryptogram' inherits from '
       return false;
     }
     
-    void Encrypt();
+    void encrypt();
     /* string WordToLower(string); */
     /* string E(string); */
-    void Decrypt();
+    void decrypt();
     /* string D(string); */
 };
 //-------------------------------------------------

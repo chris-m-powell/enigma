@@ -1,16 +1,16 @@
 #include "cryptogram.h"
 //-------------------------------------------------
-string Cryptogram::KeyGen() {
+string Cryptogram::keyGen() {
   ifstream fin;
-  GetFile(GetFilename("key"), fin);
+  getFile(getFilename("key"), fin);
   if (fin.is_open()) {
     return string ((istreambuf_iterator<char>(fin) ), (istreambuf_iterator<char>()));;
   }
 }
 //------------------------------------------------- 
-void Cryptogram::Encrypt() {
+void Cryptogram::encrypt() {
 }
 //------------------------------------------------- 
-void Cryptogram::Decrypt() {
+void Cryptogram::decrypt() {
 }
 //------------------------------------------------- 
