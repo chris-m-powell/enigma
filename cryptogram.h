@@ -15,9 +15,9 @@ class Cryptogram: public Cipher<Cryptogram> //CRTP: 'Cryptogram' inherits from '
     string getKey() const { return Key; };
     
     /* void encrypt(); */
-    string e(string);
+    string encrypt(string);
     /* void decrypt(); */
-    string d(string);
+    string decrypt(string);
 };
 //-------------------------------------------------
 #endif

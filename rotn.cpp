@@ -17,7 +17,8 @@ void Rotn::setKey(int k) {
   return;
 }
 //------------------------------------------------- 
-string Rotn::e(string p) {
+string Rotn::encrypt(string p) {
+  p = wordToLower(p);
   string c = p;
   for (int i = 0; i < p.size(); i++) {
     if (c[i] >= 'a' && c[i] <= 'z') {
@@ -30,7 +31,7 @@ string Rotn::e(string p) {
   return c;
 }
 //------------------------------------------------- 
-string Rotn::d(string c) {
+string Rotn::decrypt(string c) {
   string p = c;
   for (int i = 0; i < c.size(); i++) {
       if (p[i] >= 'a' && p[i] <= 'z') {

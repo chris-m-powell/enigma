@@ -12,11 +12,8 @@ class Rotn: public Cipher<Rotn> //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>
     int keyGen();
     void setKey(int);
     int getKey() const { return Key; }
-    
-    /* void encrypt(); */
-    string e(string);
-    /* void decrypt(); */
-    string d(string);
+    string encrypt(string);
+    string decrypt(string);
 };
 //-------------------------------------------------
 #endif

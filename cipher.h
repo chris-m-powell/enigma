@@ -22,8 +22,6 @@ class Cipher {
     void initEncrypt();      
     void initDecrypt();      
     void print();
-    void encrypt();
-    void decrypt();
 
     string getFilename(string = " ") const; // Default argument
     bool isValidFile(const string&) const;
@@ -46,18 +44,6 @@ string Cipher<T>::wordToLower(string Word) {
 }
 //------------------------------------------------- 
 template <class T>
-void Cipher<T>::encrypt() {
-  for (int i = 0; i < SourceBuffer.size(); ++i) 
-    TargetBuffer.push_back(self().e(wordToLower(SourceBuffer[i]))); // CRTP: specialized
-}
-//------------------------------------------------- 
-template <class T>
-void Cipher<T>::decrypt() {
-  for (int i = 0; i < SourceBuffer.size(); ++i) 
-    TargetBuffer.push_back(self().d(SourceBuffer[i])); // CRTP: specialized
-}
-//------------------------------------------------- 
-template <class T>
 void Cipher<T>::initKeyGen() {
   self().setKey(self().keyGen()); // CRTP: specialized
   if (KeyFlag == 0) {
@@ -76,8 +62,8 @@ void Cipher<T>::initEncrypt() {
   }
   if (!readFileToSourceBuffer("plaintext"))
     return;
-  /* self().encrypt(); // CRTP: specialized */
-  encrypt();
+  for (int i = 0; i < SourceBuffer.size(); ++i) 
+    TargetBuffer.push_back(self().encrypt(SourceBuffer[i])); // CRTP: specialized
   writeTargetBufferToFile("ciphertext");
   UI::alert(msg::CiphertextWriteSuccess, 1.5);
   clearBuffers();
@@ -91,7 +77,8 @@ void Cipher<T>::initDecrypt() {
   }
   if (!readFileToSourceBuffer("ciphertext"))
     return;
-  self().decrypt(); // CRTP: specialized method
+  for (int i = 0; i < SourceBuffer.size(); ++i) 
+    TargetBuffer.push_back(self().decrypt(SourceBuffer[i])); // CRTP: specialized
   writeTargetBufferToFile("decryption");
   clearBuffers();
 }
