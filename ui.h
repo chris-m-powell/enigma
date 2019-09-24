@@ -30,8 +30,8 @@ class UI
       cout << "[" << x << "]" << setw(DividerLength - 3) << s << endl;
       divider();
     }
-    static void prompt(string m) {cout << m << ": ";}
-    static void alert(string m, int t) {cout << m << endl; sleep(t); clearline();}
+    static void prompt(string m) {clearline(); cout << m << ": ";}
+    static void alert(string m, int t) {clearline(); cout << m << endl; sleep(t); clearline();}
 };
 //--------------------------------------------  
 #endif

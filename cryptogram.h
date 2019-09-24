@@ -11,20 +11,13 @@ class Cryptogram: public Cipher<Cryptogram> //CRTP: 'Cryptogram' inherits from '
     Cryptogram(string k) { Key = k; Name = "Cryptogram"; Type = 'S'; };
     
     string keyGen();
+    void setKey(string);
     string getKey() const { return Key; };
-    bool setKey(string k) { 
-      while (k != " ") {
-        Key = k;
-        return true;
-      } 
-      return false;
-    }
     
-    void encrypt();
-    /* string WordToLower(string); */
-    /* string E(string); */
-    void decrypt();
-    /* string D(string); */
+    /* void encrypt(); */
+    string e(string);
+    /* void decrypt(); */
+    string d(string);
 };
 //-------------------------------------------------
 #endif

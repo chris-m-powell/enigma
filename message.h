@@ -14,6 +14,7 @@ typedef Message msg;
 class Message {
   public:
     static void readMessagesFromFile();
+    static string KeyGenFailure;
     static string KeyGenSuccess;
     static string EnterFilename;
     static string InvalidFilename;

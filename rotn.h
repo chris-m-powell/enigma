@@ -10,12 +10,12 @@ class Rotn: public Cipher<Rotn> //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>
     Rotn() {Key = 0; Name = "Rotation"; Type = 'S';}
     Rotn(int k) {Key = k; Name = "Rotation"; Type = 'S';}
     int keyGen();
-    bool setKey(int k) { Key = k; }
+    void setKey(int);
     int getKey() const { return Key; }
-    void encrypt();
-    string wordToLower(string);
+    
+    /* void encrypt(); */
     string e(string);
-    void decrypt();
+    /* void decrypt(); */
     string d(string);
 };
 //-------------------------------------------------

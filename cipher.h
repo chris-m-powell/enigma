@@ -9,11 +9,12 @@ class Cipher {
   protected:
     string Name; 
     char Type;
+    bool KeyFlag;
     vector<string> SourceBuffer;
     vector<string> TargetBuffer;
   public:
-    Cipher() { Name = " "; Type = ' '; }
-    Cipher(string n, char t) { Name = n; Type = t; }
+    Cipher() { Name = " "; Type = ' '; KeyFlag = 0; }
+    Cipher(string n, char t) { Name = n; Type = t; KeyFlag = 0; }
 
     // CRTP methods
     T& self() { return static_cast<T&>(*this); }
@@ -21,6 +22,8 @@ class Cipher {
     void initEncrypt();      
     void initDecrypt();      
     void print();
+    void encrypt();
+    void decrypt();
 
     string getFilename(string = " ") const; // Default argument
     bool isValidFile(const string&) const;
@@ -28,7 +31,7 @@ class Cipher {
     bool readFileToSourceBuffer(const string& = " ");
     void writeTargetBufferToFile(const string& = " ") const;
     
-    
+    string wordToLower(string);
     string getName() const { return Name; }
     char getType() const { return Type; }
     void clearBuffers() { SourceBuffer.clear(); TargetBuffer.clear(); } 
@@ -36,40 +39,61 @@ class Cipher {
 };
 //------------------------------------------------- 
 template <class T>
+string Cipher<T>::wordToLower(string Word) {
+  for (int i = 0; i < Word.length(); i++) 
+    Word[i] = tolower(Word[i]);
+  return Word; 
+}
+//------------------------------------------------- 
+template <class T>
+void Cipher<T>::encrypt() {
+  for (int i = 0; i < SourceBuffer.size(); ++i) 
+    TargetBuffer.push_back(self().e(wordToLower(SourceBuffer[i]))); // CRTP: specialized
+}
+//------------------------------------------------- 
+template <class T>
+void Cipher<T>::decrypt() {
+  for (int i = 0; i < SourceBuffer.size(); ++i) 
+    TargetBuffer.push_back(self().d(SourceBuffer[i])); // CRTP: specialized
+}
+//------------------------------------------------- 
+template <class T>
 void Cipher<T>::initKeyGen() {
-  UI::clearline();
-  if (!self().setKey(self().keyGen())) { // CRTP: specialized
-    UI::clearline();
-    UI::alert(msg::KeyGenSuccess, 1.5);
-    clearBuffers();
+  self().setKey(self().keyGen()); // CRTP: specialized
+  if (KeyFlag == 0) {
+    UI::alert(msg::KeyGenFailure, 1.5);
+    return;  
   }
+  UI::alert(msg::KeyGenSuccess, 1.5);
+  clearBuffers();
 }
 //-------------------------------------------------
 template <class T>
 void Cipher<T>::initEncrypt() {
-  UI::clearline();
-  // need to validate key
-  if (readFileToSourceBuffer("plaintext")) {
-    self().encrypt(); // CRTP: specialized
-    UI::clearline();
-    writeTargetBufferToFile("ciphertext");
-    UI::alert(Message::CiphertextWriteSuccess, 1.5);
-    clearBuffers();
+  if (KeyFlag == 0) {
+    UI::alert(msg::KeyGenFailure, 1.5);
     return;
   }
+  if (!readFileToSourceBuffer("plaintext"))
+    return;
+  /* self().encrypt(); // CRTP: specialized */
+  encrypt();
+  writeTargetBufferToFile("ciphertext");
+  UI::alert(msg::CiphertextWriteSuccess, 1.5);
+  clearBuffers();
 }
 //-------------------------------------------------
 template <class T>
 void Cipher<T>::initDecrypt() {
-  UI::clearline(); 
-  // need to validate key
-  if (readFileToSourceBuffer("ciphertext")) {
-    self().decrypt(); // CRTP: specialized method
-    UI::clearline();
-    writeTargetBufferToFile("decryption");
-    clearBuffers();
+  if (KeyFlag == 0) {
+    UI::alert(msg::KeyGenFailure, 1.5);
     return;
   }
+  if (!readFileToSourceBuffer("ciphertext"))
+    return;
+  self().decrypt(); // CRTP: specialized method
+  writeTargetBufferToFile("decryption");
+  clearBuffers();
 }
 //-------------------------------------------------
 template <class T>
@@ -77,6 +101,7 @@ void Cipher<T>::print() {
   UI::header("Cipher Profile");
   cout << Name << endl;
   cout << Type << endl;
+  cout << KeyFlag << endl;
   cout << self().getKey() << endl; // CRTP: specialized method
   UI::divider();
   sleep(2);

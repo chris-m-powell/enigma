@@ -1,6 +1,7 @@
 #include "message.h"
 //--------------------------------------------    
 //Static member delcartions
+string msg::KeyGenFailure;
 string msg::KeyGenSuccess;
 string msg::EnterFilename;
 string msg::InvalidFilename;
@@ -14,6 +15,7 @@ string msg::PlaintextWriteSuccess;
 void Message::readMessagesFromFile() {
   ifstream fin;
   fin.open("message.txt");
+  getline(fin, msg::KeyGenFailure);
   getline(fin, msg::KeyGenSuccess);
   getline(fin, msg::EnterFilename);
   getline(fin, msg::InvalidFilename);
