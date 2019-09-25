@@ -20,7 +20,7 @@ class Crypto {
       UI::option(1, "KEY GENERATION");
       UI::option(2, "ENCRYPTION");
       UI::option(3, "DECRYPTION");
-      UI::option(4, "INFO");
+      /* UI::option(4, "INFO"); */
       UI::back(0,"BACK");
     }
     template <class T> static void selectOperation(int);

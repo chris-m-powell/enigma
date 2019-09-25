@@ -1,4 +1,5 @@
 #include "cryptogram.h"
+#include <map>
 //-------------------------------------------------
 string Cryptogram::keyGen() {
   ifstream fin;

@@ -37,12 +37,13 @@ void Crypto::selectOperation(int i) {
       case 3:
         x.initDecrypt();
         break;
-      case 4:
-        x.print();
-        break;
+      /* case 4: */
+        /* x.print(); */
+        /* break; */
       case 0:
         return;
     }
-  } while(j != 1 || j != 2 || j != 3 || j != 4);
+  /* } while(j != 1 || j != 2 || j != 3 || j != 4); */
+  } while(j != 1 || j != 2 || j != 3);
 }
 //--------------------------------------------

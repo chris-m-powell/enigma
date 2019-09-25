@@ -21,7 +21,7 @@ class Cipher {
     void initKeyGen();      
     void initEncrypt();      
     void initDecrypt();      
-    void print();
+    /* void print(); */
 
     string getFilename(string = " ") const; // Default argument
     bool isValidFile(const string&) const;
@@ -33,7 +33,7 @@ class Cipher {
     string getName() const { return Name; }
     char getType() const { return Type; }
     void clearBuffers() { SourceBuffer.clear(); TargetBuffer.clear(); } 
-    template <class U> void printBuffer(vector<U>&) const; 
+    /* template <class U> void printBuffer(vector<U>&) const; */ 
 };
 //------------------------------------------------- 
 template <class T>
@@ -83,16 +83,17 @@ void Cipher<T>::initDecrypt() {
   clearBuffers();
 }
 //-------------------------------------------------
-template <class T>
-void Cipher<T>::print() {
-  UI::header("Cipher Profile");
-  cout << Name << endl;
-  cout << Type << endl;
-  cout << KeyFlag << endl;
-  cout << self().getKey() << endl; // CRTP: specialized method
-  UI::divider();
-  sleep(2);
-}
+/* template <class T> */
+/* void Cipher<T>::print() { */
+  /* UI::header("Cipher Profile"); */
+  /* cout << Name << endl; */
+  /* cout << Type << endl; */
+  /* cout << self().getKey() << endl; // CRTP: specialized method */
+  /* printBuffer(SourceBuffer); */
+  /* printBuffer(TargetBuffer); */
+  /* UI::divider(); */
+  /* sleep(2); */
+/* } */
 //-------------------------------------------------
 template <class T>
 bool Cipher<T>::isValidFile(const string& f) const {
@@ -149,13 +150,13 @@ void Cipher<T>::writeTargetBufferToFile(const string& t) const {
   fout.close();
 }
 //------------------------------------------------- 
-template <class T>
-template <class U>
-void Cipher<T>::printBuffer(vector<U>& v) const { 
-    for_each(v.begin(), v.end(), [](U i) { // lambda expression 
-        cout << i << " "; 
-    }); 
-    cout << endl; 
-} 
+/* template <class T> */
+/* template <class U> */
+/* void Cipher<T>::printBuffer(vector<U>& v) const { */ 
+  /* for_each(v.begin(), v.end(), [](U i) { // lambda expression */ 
+      /* cout << i << " "; */ 
+  /* }); */ 
+  /* cout << endl; */ 
+/* } */ 
 //------------------------------------------------- 
 #endif
