@@ -1,12 +1,6 @@
 #ifndef UI_H
 #define UI_H
-#include <iostream>
-#include <string>
-#include <vector>
-#include <fstream>
-#include <iomanip>
-#include <unistd.h>
-using namespace std;
+#include "message.h"
 //--------------------------------------------  
 class UI 
 {

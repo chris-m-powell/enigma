@@ -1,9 +1,7 @@
 #ifndef CRYPTO_H
 #define CRYPTO_H
-#include "cipher.h"
 #include "rotn.h"
 #include "cryptogram.h"
-#include "message.h"
 //-------------------------------------------- 
 class Crypto {
   public:

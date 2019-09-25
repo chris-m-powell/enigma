@@ -6,6 +6,7 @@
 #include <fstream>
 #include <iomanip>
 #include <unistd.h>
+#include <algorithm>
 using namespace std;
 //-------------------------------------------- 
 class Message;

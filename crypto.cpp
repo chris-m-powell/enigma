@@ -2,29 +2,29 @@
 //--------------------------------------------    
 void Crypto::startUp() {
   Message::readMessagesFromFile();
-  int i;
-  do {
+  int i = 0;
+  while(i != 1 || i != 2) {
     displayCipherMenu();
-    cin >> i;
-    switch(i) {
-      case 1: 
-        selectOperation<Rotn>(i);
-        break;
-      case 2:
-        selectOperation<Cryptogram>(i);
-        break;
-      case 0:
-        UI::clear();
-        return;
+      cin >> i;
+      switch(i) {
+        case 1: 
+          selectOperation<Rotn>(i);
+          break;
+        case 2:
+          selectOperation<Cryptogram>(i);
+          break;
+        case 0:
+          UI::clear();
+          return;
     }
-  } while(i != 1 || i != 2);
+  }
 }
 //--------------------------------------------
 template <class T>
 void Crypto::selectOperation(int i) {
   int j;
   T x;
-  do {
+  while(j != 1 || j != 2 || j != 3) {
     displayOperationMenu();
     cin >> j;
     switch(j) {
@@ -37,13 +37,9 @@ void Crypto::selectOperation(int i) {
       case 3:
         x.initDecrypt();
         break;
-      /* case 4: */
-        /* x.print(); */
-        /* break; */
       case 0:
         return;
     }
-  /* } while(j != 1 || j != 2 || j != 3 || j != 4); */
-  } while(j != 1 || j != 2 || j != 3);
+  }
 }
 //--------------------------------------------

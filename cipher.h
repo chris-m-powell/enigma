@@ -1,6 +1,5 @@
 #ifndef CIPHER_H
 #define CIPHER_H
-#include <algorithm>
 #include "ui.h"
 #include "message.h"
 //------------------------------------------------- 
@@ -15,20 +14,15 @@ class Cipher {
   public:
     Cipher() { Name = " "; Type = ' '; KeyFlag = 0; }
     Cipher(string n, char t) { Name = n; Type = t; KeyFlag = 0; }
-
-    // CRTP methods
     T& self() { return static_cast<T&>(*this); }
-    void initKeyGen();      
+    void initKeyGen();
     void initEncrypt();      
     void initDecrypt();      
-    /* void print(); */
-
     string getFilename(string = " ") const; // Default argument
     bool isValidFile(const string&) const;
     void getFile(string, ifstream&) const;
     bool readFileToSourceBuffer(const string& = " ");
     void writeTargetBufferToFile(const string& = " ") const;
-    
     string wordToLower(string);
     string getName() const { return Name; }
     char getType() const { return Type; }
@@ -82,18 +76,6 @@ void Cipher<T>::initDecrypt() {
   writeTargetBufferToFile("decryption");
   clearBuffers();
 }
-//-------------------------------------------------
-/* template <class T> */
-/* void Cipher<T>::print() { */
-  /* UI::header("Cipher Profile"); */
-  /* cout << Name << endl; */
-  /* cout << Type << endl; */
-  /* cout << self().getKey() << endl; // CRTP: specialized method */
-  /* printBuffer(SourceBuffer); */
-  /* printBuffer(TargetBuffer); */
-  /* UI::divider(); */
-  /* sleep(2); */
-/* } */
 //-------------------------------------------------
 template <class T>
 bool Cipher<T>::isValidFile(const string& f) const {

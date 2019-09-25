@@ -1,4 +1,4 @@
-[Failure]: Unable to generate valid key.
+[Failure]: No valid key.
 [Success]: Key generated.
 Enter filename
 [ERROR]: Invalid filename.
