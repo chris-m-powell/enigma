@@ -20,33 +20,27 @@ void Rotn::setKey(int k) {
 string Rotn::encrypt(string p) {
   p = wordToLower(p);
   string c = p;
-  transform(p.begin(), p.end(), p.begin(), [&](char i) {
-    cout << i << " ";
+  transform(c.begin(), c.end(), c.begin(), [&](char i) { // lambda expression
+    if (i >= 'a' && i <= 'z') {
+      if (Key > 0)
+        return (((i + Key) - 'a') % 26) + 'a';
+      else
+        return (((i + Key) - 'z') % 26) + 'z';
+    } 
   });
-  
-  
-  
-  /* for (int i = 0; i < p.size(); i++) { */
-    /* if (c[i] >= 'a' && c[i] <= 'z') { */
-      /* if (Key > 0) */
-        /* c[i] = (((p[i] + Key) - 'a') % 26) + 'a'; */
-      /* else */ 
-        /* c[i] = (((p[i] + Key) - 'z') % 26) + 'z'; */
-    /* } */	
-  /* } */
   return c;
 }
 //------------------------------------------------- 
 string Rotn::decrypt(string c) {
   string p = c;
-  for (int i = 0; i < c.size(); i++) {
-      if (p[i] >= 'a' && p[i] <= 'z') {
-        if (Key > 0) 
-          p[i] = (((c[i] - Key) - 'z') % 26) + 'z';
-        else
-          p[i] = (((c[i] - Key) - 'a') % 26) + 'a';
-      }
-    }
+  transform(p.begin(), p.end(), p.begin(), [&](char i) { // lambda expression
+    if (i >= 'a' && i <= 'z') {
+      if (Key > 0)
+        return (((i - Key) - 'z') % 26) + 'z';
+      else
+        return (((i - Key) - 'a') % 26) + 'a';
+    } 
+  });
   return p;
 }
 //------------------------------------------------- 
