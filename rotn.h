@@ -11,8 +11,8 @@ class Rotn: public Cipher<Rotn> { //CRTP: 'Rotn' class inherits from 'Cipher<Rot
   private:
     int Key;
   public:
-    Rotn() {Key = 0; Name = "Rotation"; Type = 'S';}
-    Rotn(int k) {Key = k; Name = "Rotation"; Type = 'S';}
+    Rotn() {Key = 0; Name = "Rotation"; }
+    Rotn(int k) {Key = k; Name = "Rotation"; }
     int keyGen();
     void setKey(int);
     int getKey() const { return Key; }

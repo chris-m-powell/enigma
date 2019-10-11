@@ -11,8 +11,8 @@ class Cryptogram: public Cipher<Cryptogram> { //CRTP: 'Cryptogram' inherits from
   private:
     string Key;
   public:
-    Cryptogram() { Key = " "; Name = "Cryptogram"; Type = 'S'; }
-    Cryptogram(string k) { Key = k; Name = "Cryptogram"; Type = 'S'; };
+    Cryptogram() { Key = " "; Name = "Cryptogram"; }
+    Cryptogram(string k) { Key = k; Name = "Cryptogram"; };
     string keyGen();
     void setKey(string);
     string getKey() const { return Key; };

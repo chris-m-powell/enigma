@@ -4,8 +4,7 @@
 #include "message.h"
 //------------------------------------------------- 
 // Purpose: Provides common interface for each 
-//          cryptographic cipher using the
-//          Curiously Recursive Template Pattern
+//          cipher using CRTP
 //    Date: 2019.283 
 //------------------------------------------------- 
 template <class T>
@@ -13,21 +12,23 @@ class Cipher {
   protected:
     string Name; 
     bool KeyFlag;
-    vector<string> Buffer;
+    vector<string> SourceBuffer;
+    vector<string> TargetBuffer;
   public:
     Cipher() { Name = " "; KeyFlag = 0; }
     Cipher(string n, char t) { Name = n; KeyFlag = 0; }
-    T& derived() { return static_cast<T&>(*this); } // CRTP: deference pointer to object of derived class
+    T& self() { return static_cast<T&>(*this); } // CRTP: deference pointer pointing to object of derived class
     void initKeyGen();
     void initEncrypt();      
-    void initDecrypt(); 
+    void initDecrypt();      
     void print();
     string getFilename(string = " ") const; // Default argument
     bool isValidFile(const string&) const;
     void getFile(string, ifstream&) const;
-    bool readFileToBuffer(const string& = " ");
+    bool readFileToSourceBuffer(const string& = " ");
     string wordToLower(string);
     string getName() const { return Name; }
+    void clearBuffers() { SourceBuffer.clear(); TargetBuffer.clear(); } 
     template <class U> void printBuffer(vector<U>&) const; 
     template <class U> void writeBufferToFile(vector<U>&, const string& = " ") const; 
 };
@@ -41,12 +42,13 @@ string Cipher<T>::wordToLower(string Word) {
 //------------------------------------------------- 
 template <class T>
 void Cipher<T>::initKeyGen() {
-  derived().setKey(derived().keyGen()); // CRTP: specialized
+  self().setKey(self().keyGen()); // CRTP: specialized
   if (KeyFlag == 0) {
     UI::alert(msg::KeyGenFailure, 1.5);
     return;  
   }
   UI::alert(msg::KeyGenSuccess, 1.5);
+  clearBuffers();
 }
 //-------------------------------------------------
 template <class T>
@@ -55,12 +57,11 @@ void Cipher<T>::initEncrypt() {
     UI::alert(msg::KeyGenFailure, 1.5);
     return;
   }
-  if (!readFileToBuffer("plaintext"))
+  if (!readFileToSourceBuffer("plaintext"))
     return;
-  transform(Buffer.begin(), Buffer.end(), Buffer.begin(), [&](string i) { // lambda expression
-    return derived().encrypt(i); // CRTP: specialized
-  });
-  writeBufferToFile(Buffer, "ciphertext");
+  for (int i = 0; i < SourceBuffer.size(); ++i) 
+    TargetBuffer.push_back(self().encrypt(SourceBuffer[i])); // CRTP: specialized
+  writeBufferToFile(TargetBuffer, "ciphertext");
   UI::alert(msg::CiphertextWriteSuccess, 1.5);
 }
 //-------------------------------------------------
@@ -70,12 +71,12 @@ void Cipher<T>::initDecrypt() {
     UI::alert(msg::KeyGenFailure, 1.5);
     return;
   }
-  if (!readFileToBuffer("ciphertext"))
+  clearBuffers();
+  if (!readFileToSourceBuffer("ciphertext"))
     return;
-  transform(Buffer.begin(), Buffer.end(), Buffer.begin(), [&](string i) { // lambda expression
-    return derived().decrypt(i); // CRTP: specialized
-  });
-  writeBufferToFile(Buffer, "decryption");
+  for (int i = 0; i < SourceBuffer.size(); ++i) 
+    TargetBuffer.push_back(self().decrypt(SourceBuffer[i])); // CRTP: specialized
+  writeBufferToFile(TargetBuffer, "decryption");
 }
 //-------------------------------------------------
 template <class T>
@@ -107,16 +108,16 @@ void Cipher<T>::getFile(string f, ifstream& fin) const {
 }
 //-------------------------------------------------
 template <class T>
-bool Cipher<T>::readFileToBuffer(const string& t) {
+bool Cipher<T>::readFileToSourceBuffer(const string& t) {
   ifstream fin;
   getFile(getFilename(t), fin);
   if (fin.is_open()) {
-    Buffer.clear();
+    clearBuffers();
     string p;
     fin >> p;
-    Buffer.push_back(p);
+    SourceBuffer.push_back(p);
     while (fin >> p) 
-      Buffer.push_back(p);
+      SourceBuffer.push_back(p);
     fin.close();
     return true; 
   }
@@ -127,8 +128,9 @@ template <class T>
 void Cipher<T>::print() {
   UI::header("Cipher Profile");
   cout << Name << endl;
-  cout << derived().getKey() << endl; // CRTP: specialized method
-  printBuffer(Buffer);
+  cout << self().getKey() << endl; // CRTP: specialized method
+  printBuffer(SourceBuffer);
+  printBuffer(TargetBuffer);
   UI::divider();
   sleep(2);
 }
