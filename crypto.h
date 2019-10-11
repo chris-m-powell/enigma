@@ -2,26 +2,17 @@
 #define CRYPTO_H
 #include "rotn.h"
 #include "cryptogram.h"
-//-------------------------------------------- 
+//------------------------------------------------- 
+// Purpose: Generates menu for cipher selection
+//          and submenu for operation selection:
+//    Date: 2019.283 
+//------------------------------------------------- 
 class Crypto {
   public:
     Crypto() {};
     static void startUp();
-    static void displayCipherMenu() {
-      UI::header("SELECT CIPHER");
-      UI::option(1,"ROT-N");
-      UI::option(2,"CRYPTOGRAM");
-      UI::back(0,"QUIT");
-    }
-    static void displayOperationMenu() {
-      UI::header("SELECT OPERATION");
-      UI::option(1, "KEY GENERATION");
-      UI::option(2, "ENCRYPTION");
-      UI::option(3, "DECRYPTION");
-      /* UI::option(4, "INFO"); */
-      UI::back(0,"BACK");
-    }
+    static void displayCipherMenu();
+    static void displayOperationMenu();
     template <class T> static void selectOperation(int);
 };
-//--------------------------------------------
 #endif

@@ -19,27 +19,46 @@ void Crypto::startUp() {
     }
   }
 }
+//--------------------------------------------    
+void Crypto::displayCipherMenu() {
+  UI::header("SELECT CIPHER");
+  UI::option(1,"ROT-N");
+  UI::option(2,"CRYPTOGRAM");
+  UI::back(0,"QUIT");
+}
 //--------------------------------------------
 template <class T>
 void Crypto::selectOperation(int i) {
   int j;
-  T x;
-  while(j != 1 || j != 2 || j != 3) {
+  T x; // declares object of dervied class
+  while(j != 1 || j != 2 || j != 3 || j != 4) {
     displayOperationMenu();
     cin >> j;
     switch(j) {
       case 1: 
-        x.initKeyGen();
+        x.initKeyGen(); // CRTP: simulates dynamic dispatch
         break;
       case 2:
-	    x.initEncrypt();
+	    x.initEncrypt(); // CRTP: simulates dynamic dispatch
         break;
       case 3:
-        x.initDecrypt();
+        x.initDecrypt(); // CRTP: simulates dynamic dispatch
+        break;
+      case 4:
+        x.print();
         break;
       case 0:
         return;
     }
   }
+}
+//--------------------------------------------    
+void Crypto::displayOperationMenu() {
+  UI::header("SELECT OPERATION");
+  UI::option(1, "KEY GENERATION");
+  UI::option(2, "ENCRYPTION");
+  UI::option(3, "DECRYPTION");
+  UI::option(4, "INFO");
+  UI::back(0,"BACK");
 }
 //--------------------------------------------

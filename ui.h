@@ -1,7 +1,12 @@
 #ifndef UI_H
 #define UI_H
 #include "message.h"
-//--------------------------------------------  
+//------------------------------------------------- 
+// Purpose: Provides API for user-interface;
+//          primarily used by crypto class to 
+//          construct menu system
+//    Date: 2019.283 
+//------------------------------------------------- 
 class UI 
 {
   private:
@@ -27,5 +32,4 @@ class UI
     static void prompt(string m) {clearline(); cout << m << ": ";}
     static void alert(string m, int t) {clearline(); cout << m << endl; sleep(t); clearline();}
 };
-//--------------------------------------------  
 #endif

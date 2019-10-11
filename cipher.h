@@ -3,6 +3,10 @@
 #include "ui.h"
 #include "message.h"
 //------------------------------------------------- 
+// Purpose: Provides common interface for each 
+//          cipher using CRTP
+//    Date: 2019.283 
+//------------------------------------------------- 
 template <class T>
 class Cipher {
   protected:
@@ -18,6 +22,7 @@ class Cipher {
     void initKeyGen();
     void initEncrypt();      
     void initDecrypt();      
+    void print();
     string getFilename(string = " ") const; // Default argument
     bool isValidFile(const string&) const;
     void getFile(string, ifstream&) const;
@@ -27,7 +32,8 @@ class Cipher {
     string getName() const { return Name; }
     char getType() const { return Type; }
     void clearBuffers() { SourceBuffer.clear(); TargetBuffer.clear(); } 
-    /* template <class U> void printBuffer(vector<U>&) const; */ 
+
+    template <class U> void printBuffer(vector<U>&) const; 
 };
 //------------------------------------------------- 
 template <class T>
@@ -60,7 +66,7 @@ void Cipher<T>::initEncrypt() {
     TargetBuffer.push_back(self().encrypt(SourceBuffer[i])); // CRTP: specialized
   writeTargetBufferToFile("ciphertext");
   UI::alert(msg::CiphertextWriteSuccess, 1.5);
-  clearBuffers();
+  /* clearBuffers(); */
 }
 //-------------------------------------------------
 template <class T>
@@ -113,9 +119,8 @@ bool Cipher<T>::readFileToSourceBuffer(const string& t) {
     string p;
     fin >> p;
     SourceBuffer.push_back(p);
-    while (fin >> p) {
+    while (fin >> p) 
       SourceBuffer.push_back(p);
-    }
     fin.close();
     return true; 
   }
@@ -126,19 +131,30 @@ template <class T>
 void Cipher<T>::writeTargetBufferToFile(const string& t) const {
   ofstream fout;
   fout.open(getFilename(t).c_str());
-  for (int i=0; i < TargetBuffer.size(); i++) {
-    fout << TargetBuffer[i] << " "; 
-  }
+  for (int i=0; i < TargetBuffer.size(); i++)
+    fout << TargetBuffer[i] << " ";
   fout.close();
 }
 //------------------------------------------------- 
-/* template <class T> */
-/* template <class U> */
-/* void Cipher<T>::printBuffer(vector<U>& v) const { */ 
-  /* for_each(v.begin(), v.end(), [](U i) { // lambda expression */ 
-      /* cout << i << " "; */ 
-  /* }); */ 
-  /* cout << endl; */ 
-/* } */ 
+template <class T>
+void Cipher<T>::print() {
+  UI::header("Cipher Profile");
+  cout << Name << endl;
+  cout << Type << endl;
+  cout << self().getKey() << endl; // CRTP: specialized method
+  printBuffer(SourceBuffer);
+  printBuffer(TargetBuffer);
+  UI::divider();
+  sleep(2);
+}
+//-------------------------------------------------
+template <class T>
+template <class U>
+void Cipher<T>::printBuffer(vector<U>& v) const { 
+  for_each(v.begin(), v.end(), [](U i) { // lambda expression 
+      cout << i << " "; 
+  }); 
+  cout << endl; 
+} 
 //------------------------------------------------- 
 #endif

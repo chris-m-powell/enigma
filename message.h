@@ -7,11 +7,13 @@
 #include <iomanip>
 #include <unistd.h>
 #include <algorithm>
+#include <typeinfo>
 using namespace std;
-//-------------------------------------------- 
-class Message;
-typedef Message msg;
-//-------------------------------------------- 
+//------------------------------------------------- 
+// Purpose: Generates strings to be used throughout
+//          user-interface
+//    Date: 2019.283 
+//------------------------------------------------- 
 class Message {
   public:
     static void readMessagesFromFile();
@@ -26,5 +28,5 @@ class Message {
     static string DecryptionSuccess;
     static string PlaintextWriteSuccess;
 };
-//--------------------------------------------
+typedef Message msg;
 #endif

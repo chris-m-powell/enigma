@@ -2,8 +2,12 @@
 #define ROTN_H
 #include "cipher.h"
 //------------------------------------------------- 
-class Rotn: public Cipher<Rotn> //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>' class
-{
+// Purpose: Provides the specialized implementation
+//          details for the rotation cipher
+//          using CRTP
+//    Date: 2019.283 
+//------------------------------------------------- 
+class Rotn: public Cipher<Rotn> { //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>' class
   private:
     int Key;
   public:
@@ -15,5 +19,4 @@ class Rotn: public Cipher<Rotn> //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>
     string encrypt(string);
     string decrypt(string);
 };
-//-------------------------------------------------
 #endif
