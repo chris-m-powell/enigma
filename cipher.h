@@ -76,6 +76,7 @@ void Cipher<T>::initDecrypt() {
     return derived().decrypt(i); // CRTP: specialized
   });
   writeBufferToFile(Buffer, "decryption");
+  UI::alert(msg::DecryptionSuccess, 1.5);
 }
 //-------------------------------------------------
 template <class T>

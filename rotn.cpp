@@ -20,14 +20,20 @@ void Rotn::setKey(int k) {
 string Rotn::encrypt(string p) {
   p = wordToLower(p);
   string c = p;
-  for (int i = 0; i < p.size(); i++) {
-    if (c[i] >= 'a' && c[i] <= 'z') {
-      if (Key > 0)
-        c[i] = (((p[i] + Key) - 'a') % 26) + 'a';
-      else 
-        c[i] = (((p[i] + Key) - 'z') % 26) + 'z';
-    }	
-  }
+  transform(p.begin(), p.end(), p.begin(), [&](char i) {
+    cout << i << " ";
+  });
+  
+  
+  
+  /* for (int i = 0; i < p.size(); i++) { */
+    /* if (c[i] >= 'a' && c[i] <= 'z') { */
+      /* if (Key > 0) */
+        /* c[i] = (((p[i] + Key) - 'a') % 26) + 'a'; */
+      /* else */ 
+        /* c[i] = (((p[i] + Key) - 'z') % 26) + 'z'; */
+    /* } */	
+  /* } */
   return c;
 }
 //------------------------------------------------- 
