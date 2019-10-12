@@ -22,7 +22,7 @@ class Cipher {
     void initEncrypt();      
     void initDecrypt(); 
     void print();
-    string getFilename(string = " ") const; // Default argument
+    string getFilename(string = " ") const;
     bool isValidFile(const string&) const;
     void getFile(string, ifstream&) const;
     bool readFileToBuffer(const string& = " ");
@@ -34,9 +34,7 @@ class Cipher {
 //------------------------------------------------- 
 template <class T>
 string Cipher<T>::wordToLower(string w) {
-  transform(w.begin(), w.end(), w.begin(), [&](char i) { // lambda expression
-    return tolower(i);
-  });
+  transform(w.begin(), w.end(), w.begin(), [&](char i) { return tolower(i); });
   return w; 
 }
 //------------------------------------------------- 
@@ -56,8 +54,7 @@ void Cipher<T>::initEncrypt() {
     UI::alert(msg::KeyGenFailure, 1.5);
     return;
   }
-  if (!readFileToBuffer("plaintext"))
-    return;
+  if (!readFileToBuffer("plaintext")) return;
   transform(Buffer.begin(), Buffer.end(), Buffer.begin(), [&](string i) { // lambda expression
     i = wordToLower(i);
     return derived().encrypt(i); // CRTP: specialized
@@ -72,11 +69,8 @@ void Cipher<T>::initDecrypt() {
     UI::alert(msg::KeyGenFailure, 1.5);
     return;
   }
-  if (!readFileToBuffer("ciphertext"))
-    return;
-  transform(Buffer.begin(), Buffer.end(), Buffer.begin(), [&](string i) { // lambda expression
-    return derived().decrypt(i); // CRTP: specialized
-  });
+  if (!readFileToBuffer("ciphertext")) return;
+  transform(Buffer.begin(), Buffer.end(), Buffer.begin(), [&](string i) { return derived().decrypt(i); });
   writeBufferToFile(Buffer, "decryption");
   UI::alert(msg::DecryptionSuccess, 1.5);
 }
@@ -110,6 +104,13 @@ void Cipher<T>::getFile(string f, ifstream& fin) const {
 }
 //-------------------------------------------------
 template <class T>
+template <class U>
+void Cipher<T>::printBuffer(vector<U>& v) const { 
+  cout << endl;
+  for_each(v.begin(), v.end(), [](U i) { cout << i << " "; }); 
+} 
+//-------------------------------------------------
+template <class T>
 bool Cipher<T>::readFileToBuffer(const string& t) {
   ifstream fin;
   getFile(getFilename(t), fin);
@@ -118,8 +119,7 @@ bool Cipher<T>::readFileToBuffer(const string& t) {
     string p;
     fin >> p;
     Buffer.push_back(p);
-    while (fin >> p) 
-      Buffer.push_back(p);
+    while (fin >> p) Buffer.push_back(p);
     fin.close();
     return true; 
   }
@@ -127,33 +127,21 @@ bool Cipher<T>::readFileToBuffer(const string& t) {
 }
 //------------------------------------------------- 
 template <class T>
-void Cipher<T>::print() {
-  UI::header("Cipher Profile");
-  cout << Name << endl;
-  cout << derived().getKey() << endl; // CRTP: specialized method
-  printBuffer(Buffer);
-  UI::divider();
-  sleep(2);
-}
-//-------------------------------------------------
-template <class T>
-template <class U>
-void Cipher<T>::printBuffer(vector<U>& v) const { 
-  for_each(v.begin(), v.end(), [](U i) { // lambda expression 
-      cout << i << " "; 
-  }); 
-  cout << endl; 
-} 
-//------------------------------------------------- 
-template <class T>
 template <class U>
 void Cipher<T>::writeBufferToFile(vector<U>& v, const string& t) const { 
   ofstream fout;
   fout.open(getFilename(t).c_str());
-  for_each(v.begin(), v.end(), [&fout](U i) { // lambda expression 
-      fout << i << " "; 
-  }); 
+  for_each(v.begin(), v.end(), [&fout](U i) { fout << i << " "; }); 
   fout.close();
 } 
 //------------------------------------------------- 
+/* template <class T> */
+/* void Cipher<T>::print() { */
+  /* UI::header("Cipher Profile"); */
+  /* cout << Name << endl; */
+  /* cout << derived().getKey() << endl; // CRTP: specialized method */
+  /* printBuffer(Buffer); */
+  /* UI::divider(); */
+  /* sleep(2); */
+/* } */
 #endif

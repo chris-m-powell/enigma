@@ -3,7 +3,7 @@
 void Crypto::startUp() {
   Message::readMessagesFromFile();
   int i = 0;
-  while(i != 1 || i != 2) {
+  while(i != 1 || i != 2 || i != 3) {
     displayCipherMenu();
       cin >> i;
       switch(i) {
@@ -12,6 +12,9 @@ void Crypto::startUp() {
           break;
         case 2:
           selectOperation<Cryptogram>(i);
+          break;
+        case 3: 
+          selectOperation<RSA>(i);
           break;
         case 0:
           UI::clear();
@@ -24,6 +27,7 @@ void Crypto::displayCipherMenu() {
   UI::header("SELECT CIPHER");
   UI::option(1,"ROT-N");
   UI::option(2,"CRYPTOGRAM");
+  UI::option(3,"RSA");
   UI::back(0,"QUIT");
 }
 //--------------------------------------------
@@ -32,7 +36,7 @@ void Crypto::selectOperation(int i) {
   int j;
   T x; // declares object of dervied class
   while(j != 1 || j != 2 || j != 3 || j != 4) {
-    displayOperationMenu();
+    displayOperationMenu(x.getName());
     cin >> j;
     switch(j) {
       case 1: 
@@ -44,21 +48,21 @@ void Crypto::selectOperation(int i) {
       case 3:
         x.initDecrypt(); // CRTP: simulates dynamic dispatch
         break;
-      case 4:
-        x.print();
-        break;
+      /* case 4: */
+        /* x.print(); */
+        /* break; */
       case 0:
         return;
     }
   }
 }
 //--------------------------------------------    
-void Crypto::displayOperationMenu() {
-  UI::header("SELECT OPERATION");
+void Crypto::displayOperationMenu(string n) {
+  UI::header("SELECT " + n + " OPERATION");
   UI::option(1, "KEY GENERATION");
   UI::option(2, "ENCRYPTION");
   UI::option(3, "DECRYPTION");
-  UI::option(4, "INFO");
+  /* UI::option(4, "INFO"); */
   UI::back(0,"BACK");
 }
 //--------------------------------------------

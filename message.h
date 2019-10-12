@@ -7,13 +7,13 @@
 #include <iomanip>
 #include <unistd.h>
 #include <algorithm>
-#include <typeinfo>
+#include <tuple>
 using namespace std;
-//------------------------------------------------- 
-// Purpose: Generates strings to be used throughout
-//          user-interface
-//    Date: 2019.283 
-//------------------------------------------------- 
+/*------------------------------------------------- 
+  Purpose: Generates strings to be used throughout
+           user-interface
+     Date: 2019.283 
+-------------------------------------------------*/ 
 class Message {
   public:
     static void readMessagesFromFile();

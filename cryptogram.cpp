@@ -3,14 +3,12 @@
 string Cryptogram::keyGen() {
   ifstream fin;
   getFile(getFilename("key"), fin);
-  if (!fin.is_open())
-    return " ";
+  if (!fin.is_open()) return " ";
   return string ((istreambuf_iterator<char>(fin) ), (istreambuf_iterator<char>()));
 }
 //------------------------------------------------- 
 void Cryptogram::setKey(string k) { 
-  if (k == " ")
-    return;
+  if (k == " ") return;
   Key = k;
   KeyFlag = 1;
 }
