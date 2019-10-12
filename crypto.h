@@ -2,11 +2,11 @@
 #define CRYPTO_H
 #include "rotn.h"
 #include "cryptogram.h"
-//------------------------------------------------- 
-// Purpose: Generates menu for cipher selection
-//          and submenu for operation selection:
-//    Date: 2019.283 
-//------------------------------------------------- 
+/*------------------------------------------------- 
+  Purpose: Generates menu for cipher selection
+           and submenu for operation selection:
+     Date: 2019.283 
+-------------------------------------------------*/ 
 class Crypto {
   public:
     Crypto() {};

@@ -18,9 +18,7 @@ void Rotn::setKey(int k) {
 }
 //------------------------------------------------- 
 string Rotn::encrypt(string p) {
-  p = wordToLower(p);
-  string c = p;
-  transform(c.begin(), c.end(), c.begin(), [&](char i) { // lambda expression
+  transform(p.begin(), p.end(), p.begin(), [&](char i) { // lambda expression
     if (i >= 'a' && i <= 'z') {
       if (Key > 0)
         return (((i + Key) - 'a') % 26) + 'a';
@@ -28,12 +26,11 @@ string Rotn::encrypt(string p) {
         return (((i + Key) - 'z') % 26) + 'z';
     } 
   });
-  return c;
+  return p;
 }
 //------------------------------------------------- 
 string Rotn::decrypt(string c) {
-  string p = c;
-  transform(p.begin(), p.end(), p.begin(), [&](char i) { // lambda expression
+  transform(c.begin(), c.end(), c.begin(), [&](char i) { // lambda expression
     if (i >= 'a' && i <= 'z') {
       if (Key > 0)
         return (((i - Key) - 'z') % 26) + 'z';
@@ -41,6 +38,6 @@ string Rotn::decrypt(string c) {
         return (((i - Key) - 'a') % 26) + 'a';
     } 
   });
-  return p;
+  return c;
 }
 //------------------------------------------------- 

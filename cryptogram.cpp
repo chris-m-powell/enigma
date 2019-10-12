@@ -1,5 +1,4 @@
 #include "cryptogram.h"
-#include <map>
 //-------------------------------------------------
 string Cryptogram::keyGen() {
   ifstream fin;
@@ -17,21 +16,18 @@ void Cryptogram::setKey(string k) {
 }
 //------------------------------------------------- 
 string Cryptogram::encrypt(string p) {
-  p = wordToLower(p);
-  string c = p;
-  for(int i=0; i < p.size(); i++) {
-    if(p[i] >= 'a' && p[i] <= 'z') 
-      c[i] = Key[p[i] - 'a']; 
-  }
-  return c;
+  transform(p.begin(), p.end(), p.begin(), [&](char i) { // lambda expression
+    if ( i >= 'a' && i <= 'z')
+      return Key[i - 'a']; 
+  });
+  return p;
 }
 //------------------------------------------------- 
 string Cryptogram::decrypt(string c) {
-  string p = c;
-  for(int i = 0; i < c.size(); i++) {
-    if (c[i] >= 'a' && c[i] <= 'z') 
-      p[i] = (Key.find(c[i])) + 'a'; 
-  }
-  return p;
+  transform(c.begin(), c.end(), c.begin(), [&](char i) { // lambda expression
+    if ( i >= 'a' && i <= 'z')
+      return (Key.find(i)) + 'a'; 
+  });
+  return c;
 }
 //------------------------------------------------- 

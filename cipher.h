@@ -2,12 +2,12 @@
 #define CIPHER_H
 #include "ui.h"
 #include "message.h"
-//------------------------------------------------- 
-// Purpose: Provides common interface for each 
-//          cryptographic cipher using the
-//          Curiously Recursive Template Pattern
-//    Date: 2019.283 
-//------------------------------------------------- 
+/*------------------------------------------------- 
+ Purpose: Provides common interface for each 
+          cryptographic cipher using the
+          Curiously Recursive Template Pattern
+    Date: 2019.283 
+-------------------------------------------------*/ 
 template <class T>
 class Cipher {
   protected:
@@ -33,10 +33,11 @@ class Cipher {
 };
 //------------------------------------------------- 
 template <class T>
-string Cipher<T>::wordToLower(string Word) {
-  for (int i = 0; i < Word.length(); i++) 
-    Word[i] = tolower(Word[i]);
-  return Word; 
+string Cipher<T>::wordToLower(string w) {
+  transform(w.begin(), w.end(), w.begin(), [&](char i) { // lambda expression
+    return tolower(i);
+  });
+  return w; 
 }
 //------------------------------------------------- 
 template <class T>
@@ -58,6 +59,7 @@ void Cipher<T>::initEncrypt() {
   if (!readFileToBuffer("plaintext"))
     return;
   transform(Buffer.begin(), Buffer.end(), Buffer.begin(), [&](string i) { // lambda expression
+    i = wordToLower(i);
     return derived().encrypt(i); // CRTP: specialized
   });
   writeBufferToFile(Buffer, "ciphertext");
