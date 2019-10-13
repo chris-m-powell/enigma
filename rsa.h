@@ -20,8 +20,9 @@ class RSA: public Cipher<RSA> { //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>
     string encrypt(string);
     string decrypt(string);
     
+    static int gcd(int, int);
     static tuple<int, int, int> xgcd(int, int);
-    static int modExp(int, int, int);
+    static int modExp(int, unsigned, int);
     static bool millerRabinTest(int, int);
     static bool isPrime(int, int);
 };
