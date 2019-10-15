@@ -7,7 +7,8 @@
 #include <iomanip>
 #include <unistd.h>
 #include <algorithm>
-#include <tuple>
+#include <random>   // for default_random_engine & uniform_int_distribution<int>
+#include <chrono>   // to provide seed to the default_random_engine
 using namespace std;
 /*------------------------------------------------- 
   Purpose: Generates strings to be used throughout

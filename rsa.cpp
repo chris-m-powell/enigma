@@ -1,20 +1,92 @@
 #include "rsa.h"
 //------------------------------------------------- 
-int RSA::keyGen() {
-  // select odd numbers p and q
-  // apply primality test to p and q; if both passed, then continue; otherwise selent new p and q
-  // compute n = pq
-  // select integer e s.t. 1 < e < phi(n) and gcd(e,phi(n))=1
-  // use xgcd to find ed = 1 (mod phi(n)), i.e., ed+phi(n)y=1
+vector<int> RSA::keyGen() {
+  /* int p = randPrime(50); */ 
+  /* int q = randPrime(50); */ 
+  /* int n = p * q; */
+  /* int t = (p - 1) * (q - 1);// totient(p) * totient(q); */
+  /* int e = genExp(n, t); */ 
+  /* int d = modInv(e, t); */
+  int p = 13;
+  int q = 17;
+  int n = p * q;
+  int t = (p - 1) * (q - 1);
+  int e = 7;
+  int d = modInv(e, t);
+
+
+  cout << p << endl;
+  cout << q << endl;
+  cout << n << endl;
+  cout << t << endl;
+  cout << e << endl;
+  cout << d << endl;
+  cout << (e * d) % t << endl << endl;
+  sleep(50);
+
   // set kpub=(n,e) and kpriv = d
+  vector<int> v;
+  v.push_back(n);
+  v.push_back(e);
+  v.push_back(d);
+  return v; 
 }
 //------------------------------------------------- 
-void RSA::setKey(int k) {
-  return;
+int RSA::randInt(int lim) {
+  default_random_engine n (chrono::steady_clock::now().time_since_epoch().count()); // provide seed
+  uniform_int_distribution<int> uid {1,lim};   // generate integers from 0 to lim (lim included);
+  return uid(n); // generate the random int
 }
 //------------------------------------------------- 
-string RSA::encrypt(string p) {
+int RSA::randPrime(int lim) {
+  int p = randInt(lim);
+  while (!isPrime(p, 1)) p = randInt(lim);
   return p;
+}
+//------------------------------------------------- 
+int RSA::genExp(int n, int t) {
+  int e = randInt(t);
+  while (gcd(e, t) != 1) e = randInt(t);
+  return e;
+}
+//------------------------------------------------- 
+int RSA::totient(int n) {
+  if (isPrime(n, 1)) return n - 1;
+  int t = 0;
+  for (int i = 1; i <= n; ++i)
+    if (gcd(i, n) == 1) t += 1;
+  return t;
+}
+//------------------------------------------------- 
+int RSA::modInv(int a, int m) {
+    int g, x, y;
+    tie(g, x, y) = xgcd(a, m);
+    if (g != 1) return 0; 
+    else return x % m;
+    /* if (gcd(b, m) == 1) { */
+        /* int g, u, v; */
+        /* tie(g, u, v) = xgcd(k, totient(m)); */
+        /* if (g == 1) return modExp(b, u, m); */
+    /* } */
+}
+//------------------------------------------------- 
+void RSA::setKey(vector<int> v) {
+  PubKey = make_tuple(v[0], v[1]);
+  PrivKey = v[2];
+  cout << get<0>(PubKey) << endl;
+  cout << get<1>(PubKey) << endl;
+  cout << PrivKey << endl << endl;
+}
+//------------------------------------------------- 
+vector<int> RSA::encode(string m) const {
+  vector<int> v;
+  for_each(m.begin(), m.end(), [&](char i){ v.push_back(int(i)); });
+  return v;
+}
+//------------------------------------------------- 
+string RSA::encrypt(string m) {
+  encode(m);
+  return m;
 }
 //------------------------------------------------- 
 string RSA::decrypt(string c) {

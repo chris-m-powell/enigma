@@ -15,16 +15,14 @@ void Cryptogram::setKey(string k) {
 //------------------------------------------------- 
 string Cryptogram::encrypt(string p) {
   transform(p.begin(), p.end(), p.begin(), [&](char i) { // lambda expression
-    if ( i >= 'a' && i <= 'z')
-      return Key[i - 'a']; 
+    if ( i >= 'a' && i <= 'z') return Key[i - 'a']; 
   });
   return p;
 }
 //------------------------------------------------- 
 string Cryptogram::decrypt(string c) {
   transform(c.begin(), c.end(), c.begin(), [&](char i) { // lambda expression
-    if ( i >= 'a' && i <= 'z')
-      return (Key.find(i)) + 'a'; 
+    if ( i >= 'a' && i <= 'z') return (Key.find(i)) + 'a'; 
   });
   return c;
 }

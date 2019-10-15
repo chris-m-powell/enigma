@@ -10,20 +10,26 @@
 class RSA: public Cipher<RSA> { //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>' class
   private:
     int PrivKey;
-    int PubKey;
+    tuple<int, int> PubKey;
   public:
-    RSA() {PrivKey = PubKey = 0; Name = "RSA"; }
-    RSA(int k) {PrivKey = PubKey = k; Name = "RSA"; }
-    int keyGen();
-    void setKey(int);
-    tuple<int, int> getKey() const { return make_tuple(PrivKey, PubKey); }
+    RSA() {PrivKey = 0; PubKey = make_tuple(0, 0); Name = "RSA"; }
+    RSA(int k, int k1, int k2) {PrivKey = k; PubKey = make_tuple(k1, k2); Name = "RSA"; }
+    vector<int> keyGen();
+    void setKey(vector<int>);
+    /* vector<int> getKey() const { return vec; } */
     string encrypt(string);
+    vector<int> encode(string) const;
     string decrypt(string);
-    
-    static int gcd(int, int);
-    static tuple<int, int, int> xgcd(int, int);
-    static int modExp(int, unsigned, int);
-    static bool millerRabinTest(int, int);
-    static bool isPrime(int, int);
+   
+    int randInt(int);
+    int randPrime(int);
+    int genExp(int, int);
+    int totient(int);
+    int gcd(int, int);
+    tuple<int, int, int> xgcd(int, int);
+    int modExp(int, unsigned, int);
+    int modInv(int, int);
+    bool millerRabinTest(int, int);
+    bool isPrime(int, int);
 };
 #endif
