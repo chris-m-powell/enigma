@@ -19,6 +19,7 @@ class RSA: public Cipher<RSA> { //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>
     /* vector<int> getKey() const { return vec; } */
     string encrypt(string);
     vector<int> encode(string) const;
+    string decode(vector<int>) const;
     string decrypt(string);
    
     int randInt(int);

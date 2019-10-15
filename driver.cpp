@@ -12,9 +12,9 @@ int main() {
     /* int y = 65; */
     /* cout <<"ASCII index of "<<y<<" is "<<(char)y<<endl; */ 
 
-  cout << RSA::encode("this is a test")[1]; 
+  /* cout << RSA::encode("this is a test")[1]; */ 
   
 
-  /* Crypto::startUp(); */
+  Crypto::startUp();
   return 0;
 }

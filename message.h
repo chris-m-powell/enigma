@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <random>   // for default_random_engine & uniform_int_distribution<int>
 #include <chrono>   // to provide seed to the default_random_engine
+#include <sstream>
+#include <iterator>
 using namespace std;
 /*------------------------------------------------- 
   Purpose: Generates strings to be used throughout

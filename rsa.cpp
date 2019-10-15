@@ -22,8 +22,7 @@ vector<int> RSA::keyGen() {
   cout << e << endl;
   cout << d << endl;
   cout << (e * d) % t << endl << endl;
-  sleep(50);
-
+  
   // set kpub=(n,e) and kpriv = d
   vector<int> v;
   v.push_back(n);
@@ -73,9 +72,7 @@ int RSA::modInv(int a, int m) {
 void RSA::setKey(vector<int> v) {
   PubKey = make_tuple(v[0], v[1]);
   PrivKey = v[2];
-  cout << get<0>(PubKey) << endl;
-  cout << get<1>(PubKey) << endl;
-  cout << PrivKey << endl << endl;
+  KeyFlag = 1;
 }
 //------------------------------------------------- 
 vector<int> RSA::encode(string m) const {
@@ -84,12 +81,24 @@ vector<int> RSA::encode(string m) const {
   return v;
 }
 //------------------------------------------------- 
+string RSA::decode(vector<int> v) const {
+  ostringstream oss;
+  copy(v.begin(), v.end(), ostream_iterator<char>(oss)); // or int
+  string c = oss.str();
+  return c;
+}
+//------------------------------------------------- 
 string RSA::encrypt(string m) {
-  encode(m);
+  vector<int> v = encode(m); //encode string as vector array of integers
+  /* transform(v.begin(), v.end(), v.begin(), [&](int i) { return modExp(i, get<1>(PubKey), get<0>(PubKey)); }); */
+  m = decode(v);
   return m;
 }
 //------------------------------------------------- 
 string RSA::decrypt(string c) {
+  vector<int> v = encode(c); //encode string as vector array of integers
+  /* transform(v.begin(), v.end(), v.begin(), [&](int i) { return modExp(i, PrivKey, get<0>(PubKey)); }); */
+  c = decode(v);
   return c;
 }
 //------------------------------------------------- 
