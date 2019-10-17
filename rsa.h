@@ -9,8 +9,8 @@
 -------------------------------------------------*/ 
 class RSA: public Cipher<RSA> { //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>' class
   private:
-    int PrivKey;
-    tuple<int, int> PubKey;
+    int PrivKey; // d
+    tuple<int, int> PubKey; // (n, e)
     int m, c;
   public:
     RSA() { PrivKey = 0; PubKey = make_tuple(0, 0); Name = "RSA"; m = c = 0; }
@@ -18,8 +18,8 @@ class RSA: public Cipher<RSA> { //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>
     void setKey(vector<int>);
     void encode();
     void decode();
-    void encrypt() { c = modExp(m, get<1>(PubKey), get<0>(PubKey)); }
-    void decrypt() { m = modExp(c, PrivKey, get<0>(PubKey)); }
+    void encrypt() { c = modExp(m, get<1>(PubKey), get<0>(PubKey)); cout << c;} // c=m^e (mod n)
+    void decrypt() { m = modExp(c, PrivKey, get<0>(PubKey)); cout << m;} // m=c^d (mod n)
    
     int randInt(int);
     int randPrime(int);

@@ -96,18 +96,6 @@ void Cipher<T>::getFile(string f, ifstream& fin) const {
 }
 //-------------------------------------------------
 /* template <class T> */
-/* bool Cipher<T>::readFileToBuffer(const string& t) { */
-  /* ifstream fin; */
-  /* getFile(getFilename(t), fin); */
-  /* if (fin.is_open()) { */
-    /* CharVec.assign((istreambuf_iterator<char>(fin)), istreambuf_iterator<char>()); */
-    /* fin.close(); */
-    /* return true; */ 
-  /* } */ 
-  /* return false; */ 
-/* } */
-//------------------------------------------------- 
-/* template <class T> */
 /* template <class U> */
 /* void Cipher<T>::printBuffer(vector<U>& v) const { */ 
   /* cout << endl; */
