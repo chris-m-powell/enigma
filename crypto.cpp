@@ -11,10 +11,10 @@ void Crypto::startUp() {
           selectOperation<Rotn>(i);
           break;
         case 2:
-          selectOperation<Cryptogram>(i);
+          /* selectOperation<Cryptogram>(i); */
           break;
         case 3: 
-          selectOperation<RSA>(i);
+          /* selectOperation<RSA>(i); */
           break;
         case 0:
           UI::clear();

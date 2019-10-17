@@ -13,7 +13,7 @@ class RSA: public Cipher<RSA> { //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>
     tuple<int, int> PubKey;
   public:
     RSA() {PrivKey = 0; PubKey = make_tuple(0, 0); Name = "RSA"; }
-    RSA(int k, int k1, int k2) {PrivKey = k; PubKey = make_tuple(k1, k2); Name = "RSA"; }
+    /* RSA(int k, int k1, int k2) {PrivKey = k; PubKey = make_tuple(k1, k2); Name = "RSA"; } */
     vector<int> keyGen();
     void setKey(vector<int>);
     /* vector<int> getKey() const { return vec; } */

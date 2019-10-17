@@ -12,11 +12,17 @@ class Rotn: public Cipher<Rotn> { //CRTP: 'Rotn' class inherits from 'Cipher<Rot
     int Key;
   public:
     Rotn() {Key = 0; Name = "ROT-N"; }
-    Rotn(int k) {Key = k; Name = "ROT-N"; }
     int keyGen();
     void setKey(int);
     int getKey() const { return Key; }
-    string encrypt(string);
-    string decrypt(string);
+    void encode() { IntVec.assign(CharVec.begin(), CharVec.end()); }  
+    void decode() { CharVec.assign(IntVec.begin(), IntVec.end()); }
+    void encrypt(); 
+    void decrypt(); 
+    bool loadPlaintext();
+    bool loadCiphertext();
+    void saveCiphertext() const;
+    void savePlaintext() const;
+//------------------------------------------------- 
 };
 #endif
