@@ -75,31 +75,18 @@ void RSA::setKey(vector<int> v) {
   KeyFlag = 1;
 }
 //------------------------------------------------- 
-vector<int> RSA::encode(string m) const {
-  vector<int> v;
-  for_each(m.begin(), m.end(), [&](char i){ v.push_back(int(i)); });
-  return v;
+void RSA::encode() {
+  IntVec.assign(CharVec.begin(), CharVec.end());
+  string s;
+  for_each(IntVec.begin(), IntVec.end(), [&](int i){ s += to_string(i); });
+  cout << s;
+  m = stoi(s);
 }
 //------------------------------------------------- 
-string RSA::decode(vector<int> v) const {
-  ostringstream oss;
-  copy(v.begin(), v.end(), ostream_iterator<char>(oss)); // or int
-  string c = oss.str();
-  return c;
-}
-//------------------------------------------------- 
-string RSA::encrypt(string m) {
-  vector<int> v = encode(m); //encode string as vector array of integers
-  /* transform(v.begin(), v.end(), v.begin(), [&](int i) { return modExp(i, get<1>(PubKey), get<0>(PubKey)); }); */
-  m = decode(v);
-  return m;
-}
-//------------------------------------------------- 
-string RSA::decrypt(string c) {
-  vector<int> v = encode(c); //encode string as vector array of integers
-  /* transform(v.begin(), v.end(), v.begin(), [&](int i) { return modExp(i, PrivKey, get<0>(PubKey)); }); */
-  c = decode(v);
-  return c;
+void RSA::decode() {
+  /* ostringstream oss; */
+  /* copy(v.begin(), v.end(), ostream_iterator<char>(oss)); // or int */
+  /* string c = oss.str(); */
 }
 //------------------------------------------------- 
 int RSA::modExp(int a, unsigned k, int m) {
@@ -153,3 +140,36 @@ bool RSA::isPrime(int n, int k) {
     if (!millerRabinTest(d, n)) return false;
 }
 //------------------------------------------------- 
+bool RSA::loadPlaintext() { 
+  ifstream fin;
+  getFile(getFilename("plaintext"), fin);
+  if (fin.is_open()) {
+    CharVec.assign((istreambuf_iterator<char>(fin)), istreambuf_iterator<char>());
+    fin.close();
+    return true; 
+  } 
+  return false;
+}
+//------------------------------------------------- 
+bool RSA::loadCiphertext() { 
+  ifstream fin;
+  getFile(getFilename("ciphertext"), fin);
+  if (fin.is_open()) {
+    CharVec.assign((istreambuf_iterator<char>(fin)), istreambuf_iterator<char>());
+    fin.close();
+    return true; 
+  } 
+  return false; 
+}
+  //------------------------------------------------- 
+void RSA::saveCiphertext() { 
+  ofstream fout(getFilename("ciphertext"));
+  fout << c;
+  fout.close();
+} 
+//------------------------------------------------- 
+void RSA::savePlaintext() { 
+  ofstream fout(getFilename("plaintext"));
+  for_each(CharVec.begin(), CharVec.end(), [&fout](char i) { fout << i; }); 
+  fout.close();
+} 

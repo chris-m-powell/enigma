@@ -9,14 +9,6 @@ int Rotn::keyGen() {
   return k;
 }
 //------------------------------------------------- 
-void Rotn::setKey(int k) {
-  if ( k % 26 == 0 )
-    return;
-  Key = k;
-  KeyFlag = 1;
-  return;
-}
-//------------------------------------------------- 
 void Rotn::encrypt() {
   transform(IntVec.begin(), IntVec.end(), IntVec.begin(), [&](int i) {
     if (Key > 0) {
@@ -60,7 +52,7 @@ bool Rotn::loadPlaintext() {
 //------------------------------------------------- 
 bool Rotn::loadCiphertext() { 
   ifstream fin;
-  getFile(getFilename("plaintext"), fin);
+  getFile(getFilename("ciphertext"), fin);
   if (fin.is_open()) {
     CharVec.assign((istreambuf_iterator<char>(fin)), istreambuf_iterator<char>());
     fin.close();
@@ -69,13 +61,14 @@ bool Rotn::loadCiphertext() {
   return false; 
 }
   //------------------------------------------------- 
-void Rotn::saveCiphertext() const { 
+void Rotn::saveCiphertext() { 
   ofstream fout(getFilename("ciphertext"));
-  for_each(IntVec.begin(), IntVec.end(), [&fout](int i) { fout << i; }); 
+  decode();
+  for_each(CharVec.begin(), CharVec.end(), [&fout](char i) { fout << i; }); 
   fout.close();
 } 
 //------------------------------------------------- 
-void Rotn::savePlaintext() const { 
+void Rotn::savePlaintext() { 
   ofstream fout(getFilename("plaintext"));
   for_each(CharVec.begin(), CharVec.end(), [&fout](char i) { fout << i; }); 
   fout.close();

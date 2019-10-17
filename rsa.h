@@ -11,16 +11,18 @@ class RSA: public Cipher<RSA> { //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>
   private:
     int PrivKey;
     tuple<int, int> PubKey;
+    int m, c;
   public:
-    RSA() {PrivKey = 0; PubKey = make_tuple(0, 0); Name = "RSA"; }
+    RSA() { PrivKey = 0; PubKey = make_tuple(0, 0); Name = "RSA"; m = c = 0; }
     /* RSA(int k, int k1, int k2) {PrivKey = k; PubKey = make_tuple(k1, k2); Name = "RSA"; } */
     vector<int> keyGen();
     void setKey(vector<int>);
     /* vector<int> getKey() const { return vec; } */
-    string encrypt(string);
-    vector<int> encode(string) const;
-    string decode(vector<int>) const;
-    string decrypt(string);
+    void encode();
+    void decode();
+    void encrypt() { c = modExp(m, get<1>(PubKey), get<0>(PubKey)); }
+    void decrypt() { m = modExp(c, PrivKey, get<0>(PubKey)); }
+    /* string decode(vector<int>) const; */
    
     int randInt(int);
     int randPrime(int);
@@ -32,5 +34,10 @@ class RSA: public Cipher<RSA> { //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>
     int modInv(int, int);
     bool millerRabinTest(int, int);
     bool isPrime(int, int);
+    
+    bool loadPlaintext();
+    bool loadCiphertext();
+    void saveCiphertext();
+    void savePlaintext();
 };
 #endif

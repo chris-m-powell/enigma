@@ -2,7 +2,7 @@
 #define CRYPTO_H
 #include "rotn.h"
 /* #include "cryptogram.h" */
-/* #include "rsa.h" */
+#include "rsa.h"
 /*------------------------------------------------- 
   Purpose: Generates menu for cipher selection
            and submenu for operation selection:

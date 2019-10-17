@@ -17,7 +17,6 @@ class Cipher {
     vector<int> IntVec;
   public:
     Cipher() { Name = " "; KeyFlag = 0; }
-    /* Cipher(string n, char t) { Name = n; KeyFlag = 0; } */
     T& derived() { return static_cast<T&>(*this); } // CRTP: deference pointer to object of derived class
     void initKeyGen();
     void initEncrypt();      
@@ -27,11 +26,6 @@ class Cipher {
     void getFile(string, ifstream&) const;
     string getName() const { return Name; }
     bool isValidKey() const;
-    /* bool readFileToBuffer(const string& = " "); */
-    /* vector<int> encode(vector<char>& v); */
-    /* vector<char> decode(vector<int>& v); */
-    /* template <class U> void printBuffer(vector<U>&) const; */ 
-    /* void writeBufferToFile(const string& = " ") const; */ 
 };
 //------------------------------------------------- 
 template <class T>

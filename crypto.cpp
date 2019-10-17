@@ -14,7 +14,7 @@ void Crypto::startUp() {
           /* selectOperation<Cryptogram>(i); */
           break;
         case 3: 
-          /* selectOperation<RSA>(i); */
+          selectOperation<RSA>(i);
           break;
         case 0:
           UI::clear();
