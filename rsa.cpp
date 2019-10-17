@@ -76,17 +76,16 @@ void RSA::setKey(vector<int> v) {
 }
 //------------------------------------------------- 
 void RSA::encode() {
-  IntVec.assign(CharVec.begin(), CharVec.end());
+  IntVec.assign(CharVec.begin(), CharVec.end()-1);
   string s;
   for_each(IntVec.begin(), IntVec.end(), [&](int i){ s += to_string(i); });
-  cout << s;
   m = stoi(s);
 }
 //------------------------------------------------- 
 void RSA::decode() {
-  /* ostringstream oss; */
-  /* copy(v.begin(), v.end(), ostream_iterator<char>(oss)); // or int */
-  /* string c = oss.str(); */
+  cout << m;
+  string s = to_string(m);
+  cout << s;
 }
 //------------------------------------------------- 
 int RSA::modExp(int a, unsigned k, int m) {
@@ -155,7 +154,7 @@ bool RSA::loadCiphertext() {
   ifstream fin;
   getFile(getFilename("ciphertext"), fin);
   if (fin.is_open()) {
-    CharVec.assign((istreambuf_iterator<char>(fin)), istreambuf_iterator<char>());
+    fin >> c;
     fin.close();
     return true; 
   } 
