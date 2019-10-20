@@ -1,12 +1,16 @@
 #include "rsa.h"
 //------------------------------------------------- 
-vector<int> RSA::keyGen() {
+void RSA::keyGen() {
   /* int p = randPrime(50); */ 
   /* int q = randPrime(50); */ 
   /* int n = p * q; */
   /* int t = (p - 1) * (q - 1);// totient(p) * totient(q); */
   /* int e = genExp(n, t); */ 
   /* int d = modInv(e, t); */
+ 
+  /* cout << p << endl; */
+  /* cout << q << endl; */
+  /* cout << n << endl << endl; */
   int p = 13;
   int q = 17;
   int n = p * q;
@@ -18,42 +22,40 @@ vector<int> RSA::keyGen() {
   /* cout << (e * d) % t << endl << endl; */
   
   // set kpub=(n,e) and kpriv = d
-  vector<int> v;
-  v.push_back(n);
-  v.push_back(e);
-  v.push_back(d);
-  return v; 
-}
-//------------------------------------------------- 
-void RSA::setKey(vector<int> v) {
-  PubKey = make_tuple(v[0], v[1]);
-  PrivKey = v[2];
+  PubKey = make_tuple(n, e);
+  PrivKey = d;
   KeyFlag = 1;
-}
-//------------------------------------------------- 
-void RSA::encode() {
-  IntVec.assign(CharVec.begin(), CharVec.end()-1);
-  string s;
-  for_each(IntVec.begin(), IntVec.end(), [&](int i){ s += to_string(i); });
-  m = stoi(s);
-}
-//------------------------------------------------- 
-void RSA::decode() {
-  string s = to_string(m);
-  for_each(s.begin(), s.end(), [&](char i){ CharVec.push_back(char(i)); });
-  /* IntVec.assign(CharVec.begin(), CharVec.end()); */
 }
 //------------------------------------------------- 
 bool RSA::loadPlaintext() { 
   ifstream fin;
   getFile(getFilename("plaintext"), fin);
   if (fin.is_open()) {
-    CharVec.assign((istreambuf_iterator<char>(fin)), istreambuf_iterator<char>());
+    Buf.assign((istreambuf_iterator<char>(fin)), istreambuf_iterator<char>());
     fin.close();
     return true; 
   } 
   return false;
 }
+//------------------------------------------------- 
+void RSA::encode() {
+  IntVec.assign(Buf.begin(), Buf.end()-1);
+  string s;
+  for_each(IntVec.begin(), IntVec.end(), [&](int i){ s += to_string(i); });
+  m = stoi(s);
+}
+//------------------------------------------------- 
+void RSA::encrypt() {
+  encode();
+  c = modExp(m, get<1>(PubKey), get<0>(PubKey)); // c=m^e (mod n)
+  cout << c;
+}
+//------------------------------------------------- 
+void RSA::saveCiphertext() { 
+  ofstream fout(getFilename("ciphertext"));
+  fout << c;
+  fout.close();
+} 
 //------------------------------------------------- 
 bool RSA::loadCiphertext() { 
   ifstream fin;
@@ -66,15 +68,20 @@ bool RSA::loadCiphertext() {
   return false; 
 }
 //------------------------------------------------- 
-void RSA::saveCiphertext() { 
-  ofstream fout(getFilename("ciphertext"));
-  fout << c;
-  fout.close();
-} 
+void RSA::decrypt() {
+  m = modExp(c, PrivKey, get<0>(PubKey)); // m=c^d (mod n)
+  cout << m;
+  decode();
+}
+//------------------------------------------------- 
+void RSA::decode() {
+  string s = to_string(m);
+  for_each(s.begin(), s.end(), [&](char i){ Buf.push_back(i + '0'); });
+}
 //------------------------------------------------- 
 void RSA::savePlaintext() { 
   ofstream fout(getFilename("plaintext"));
-  for_each(CharVec.begin(), CharVec.end(), [&fout](char i) { fout << i; }); 
+  for_each(Buf.begin(), Buf.end(), [&fout](char i) { fout << i; }); 
   fout.close();
 } 
 //------------------------------------------------- 

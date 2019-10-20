@@ -1,75 +1,41 @@
 #include "rotn.h"
 //------------------------------------------------- 
-int Rotn::keyGen() {
+void Rotn::keyGen() {
   int k = 0;
   while (k % 26 == 0) {
     UI::prompt("Enter an integer not congruent to 0 mod 26");
     cin >> k;
   }
-  return k;
+  Key = k;
+  KeyFlag = 1;
 }
 //------------------------------------------------- 
 void Rotn::encrypt() {
-  transform(IntVec.begin(), IntVec.end(), IntVec.begin(), [&](int i) {
+  transform(Buf.begin(), Buf.end(), Buf.begin(), [&](char i) {
     if (Key > 0) {
       if (i >= 'a' && i <= 'z') return (((i + Key) - 'a') % 26) + 'a';
-      else if (i >= 'A' && i <= 'Z') return (((i + Key - 'A') % 26) + 'A');
-      else return i;
+      else if (i >= 'A' && i <= 'Z') return (((i + Key) - 'A') % 26) + 'A';
+      else return i - 'A' + 'A';
     }
     else {
       if (i >= 'a' && i <= 'z') return (((i + Key) - 'z') % 26) + 'z';
       else if (i >= 'A' && i <= 'Z') return (((i + Key) - 'Z') % 26) + 'Z';
-      else return i;
+      else return i - 'A' + 'A';
     }
   });
 }
 //------------------------------------------------- 
 void Rotn::decrypt() {
-  transform(IntVec.begin(), IntVec.end(), IntVec.begin(), [&](int i) {
+  transform(Buf.begin(), Buf.end(), Buf.begin(), [&](char i) {
     if (Key > 0) {
       if (i >= 'a' && i <= 'z') return (((i - Key) - 'z') % 26) + 'z';
       else if (i >= 'A' && i <= 'Z') return (((i - Key) - 'Z') % 26) + 'Z';
-      else return i;
+      else return i + 0;
     }
     else {
       if (i >= 'a' && i <= 'z') return (((i - Key) - 'a') % 26) + 'a';
       else if (i >= 'A' && i <= 'Z') return (((i - Key) - 'a') % 26) + 'a';
-      else return i;
+      else return i + 0;
     }
   });
 }
-//------------------------------------------------- 
-bool Rotn::loadPlaintext() { 
-  ifstream fin;
-  getFile(getFilename("plaintext"), fin);
-  if (fin.is_open()) {
-    CharVec.assign((istreambuf_iterator<char>(fin)), istreambuf_iterator<char>());
-    fin.close();
-    return true; 
-  } 
-  return false;
-}
-//------------------------------------------------- 
-bool Rotn::loadCiphertext() { 
-  ifstream fin;
-  getFile(getFilename("ciphertext"), fin);
-  if (fin.is_open()) {
-    CharVec.assign((istreambuf_iterator<char>(fin)), istreambuf_iterator<char>());
-    fin.close();
-    return true; 
-  } 
-  return false; 
-}
-  //------------------------------------------------- 
-void Rotn::saveCiphertext() { 
-  ofstream fout(getFilename("ciphertext"));
-  decode();
-  for_each(CharVec.begin(), CharVec.end(), [&fout](char i) { fout << i; }); 
-  fout.close();
-} 
-//------------------------------------------------- 
-void Rotn::savePlaintext() { 
-  ofstream fout(getFilename("plaintext"));
-  for_each(CharVec.begin(), CharVec.end(), [&fout](char i) { fout << i; }); 
-  fout.close();
-} 

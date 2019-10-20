@@ -11,7 +11,7 @@ void Crypto::startUp() {
           selectOperation<Rotn>(i);
           break;
         case 2:
-          /* selectOperation<Cryptogram>(i); */
+          selectOperation<Cryptogram>(i);
           break;
         case 3: 
           selectOperation<RSA>(i);
@@ -35,7 +35,7 @@ template <class T>
 void Crypto::selectOperation(int i) {
   int j;
   T x; // declares object of dervied class
-  while(j != 1 || j != 2 || j != 3 || j != 4) {
+  while(j != 1 || j != 2 || j != 3) {
     displayOperationMenu(x.getName());
     cin >> j;
     switch(j) {
@@ -48,9 +48,6 @@ void Crypto::selectOperation(int i) {
       case 3:
         x.initDecrypt(); // CRTP: simulates dynamic dispatch
         break;
-      /* case 4: */
-        /* x.print(); */
-        /* break; */
       case 0:
         return;
     }
@@ -62,7 +59,6 @@ void Crypto::displayOperationMenu(string n) {
   UI::option(1, "KEY GENERATION");
   UI::option(2, "ENCRYPTION");
   UI::option(3, "DECRYPTION");
-  /* UI::option(4, "INFO"); */
   UI::back(0,"BACK");
 }
 //--------------------------------------------

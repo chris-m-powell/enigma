@@ -1,29 +1,30 @@
 #include "cryptogram.h"
 //-------------------------------------------------
-string Cryptogram::keyGen() {
+void Cryptogram::keyGen() {
   ifstream fin;
   getFile(getFilename("key"), fin);
-  if (!fin.is_open()) return " ";
-  return string ((istreambuf_iterator<char>(fin) ), (istreambuf_iterator<char>()));
-}
-//------------------------------------------------- 
-void Cryptogram::setKey(string k) { 
-  if (k == " ") return;
-  Key = k;
+  if (fin.is_open()) {
+  string s((istreambuf_iterator<char>(fin)), (istreambuf_iterator<char>()));
+  Key = s;
+  cout << Key;
+  fin.close();
   KeyFlag = 1;
+  }
 }
 //------------------------------------------------- 
-string Cryptogram::encrypt(string p) {
-  transform(p.begin(), p.end(), p.begin(), [&](char i) { // lambda expression
-    if ( i >= 'a' && i <= 'z') return Key[i - 'a']; 
+void Cryptogram::encrypt() {
+  transform(Buf.begin(), Buf.end(), Buf.begin(), [&](char i) {
+    if ( i >= 'a' && i <= 'z') return Key[i - 'a'];
+    if ( i >= 'A' && i <= 'Z') { 
+      char c = Key[i - 'a'] - 32;
+      return c; 
+    }
   });
-  return p;
 }
 //------------------------------------------------- 
-string Cryptogram::decrypt(string c) {
-  transform(c.begin(), c.end(), c.begin(), [&](char i) { // lambda expression
+void Cryptogram::decrypt() {
+  transform(Buf.begin(), Buf.end(), Buf.begin(), [&](char i) {
     if ( i >= 'a' && i <= 'z') return (Key.find(i)) + 'a'; 
+    if ( i >= 'A' && i <= 'Z') return (Key.find(i + 32)) + 'A'; 
   });
-  return c;
 }
-//------------------------------------------------- 

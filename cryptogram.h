@@ -12,11 +12,8 @@ class Cryptogram: public Cipher<Cryptogram> { //CRTP: 'Cryptogram' inherits from
     string Key;
   public:
     Cryptogram() { Key = " "; Name = "CRYPTOGRAM"; }
-    Cryptogram(string k) { Key = k; Name = "CRYPTOGRAM"; };
-    string keyGen();
-    void setKey(string);
-    string getKey() const { return Key; };
-    string encrypt(string);
-    string decrypt(string);
+    void keyGen();
+    void encrypt();
+    void decrypt();
 };
 #endif

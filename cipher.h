@@ -13,11 +13,10 @@ class Cipher {
   protected:
     string Name; 
     bool KeyFlag;
-    vector<char> CharVec;
-    vector<int> IntVec;
+    vector<char> Buf;
   public:
     Cipher() { Name = " "; KeyFlag = 0; }
-    T& derived() { return static_cast<T&>(*this); } // CRTP: deference pointer to object of derived class
+    T& derived() { return static_cast<T&>(*this); }
     void initKeyGen();
     void initEncrypt();      
     void initDecrypt(); 
@@ -26,11 +25,16 @@ class Cipher {
     void getFile(string, ifstream&) const;
     string getName() const { return Name; }
     bool isValidKey() const;
+    
+    bool loadPlaintext();
+    bool loadCiphertext();
+    void saveCiphertext();
+    void savePlaintext();
 };
 //------------------------------------------------- 
-template <class T>
+template <class T> 
 void Cipher<T>::initKeyGen() {
-  derived().setKey(derived().keyGen()); // CRTP: specialized
+  derived().keyGen();
   if (KeyFlag == 0) {
     UI::alert(msg::KeyGenFailure, 1.5);
     return;  
@@ -51,7 +55,6 @@ template <class T>
 void Cipher<T>::initEncrypt() {
   if (!isValidKey()) return;
   if (!derived().loadPlaintext()) return; 
-  derived().encode();
   derived().encrypt();
   derived().saveCiphertext();
   UI::alert(msg::CiphertextWriteSuccess, 1.5);
@@ -62,7 +65,6 @@ void Cipher<T>::initDecrypt() {
   if (!isValidKey()) return;
   if (!derived().loadCiphertext()) return;
   derived().decrypt();
-  derived().decode();
   derived().savePlaintext();
   UI::alert(msg::DecryptionSuccess, 1.5);
 }
@@ -95,6 +97,43 @@ void Cipher<T>::getFile(string f, ifstream& fin) const {
   fin.open(f, ios::binary);
 }
 //-------------------------------------------------
+template <class T>
+bool Cipher<T>::loadPlaintext() { 
+  ifstream fin;
+  getFile(getFilename("plaintext"), fin);
+  if (fin.is_open()) {
+    Buf.assign((istreambuf_iterator<char>(fin)), istreambuf_iterator<char>());
+    fin.close();
+    return true; 
+  } 
+  return false;
+}
+//------------------------------------------------- 
+template <class T>
+bool Cipher<T>::loadCiphertext() { 
+  ifstream fin;
+  getFile(getFilename("ciphertext"), fin);
+  if (fin.is_open()) {
+    Buf.assign((istreambuf_iterator<char>(fin)), istreambuf_iterator<char>());
+    fin.close();
+    return true; 
+  } 
+  return false; 
+}
+//------------------------------------------------- 
+template <class T>
+void Cipher<T>::saveCiphertext() { 
+  ofstream fout(getFilename("ciphertext"));
+  for_each(Buf.begin(), Buf.end(), [&fout](char i) { fout << i; }); 
+  fout.close();
+} 
+//------------------------------------------------- 
+template <class T>
+void Cipher<T>::savePlaintext() { 
+  ofstream fout(getFilename("plaintext"));
+  for_each(Buf.begin(), Buf.end(), [&fout](char i) { fout << i; }); 
+  fout.close();
+} 
 /* template <class T> */
 /* template <class U> */
 /* void Cipher<T>::printBuffer(vector<U>& v) const { */ 
