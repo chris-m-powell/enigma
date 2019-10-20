@@ -30,9 +30,9 @@ class RSA: public Cipher<RSA> { //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>
     int modInv(int, int);
     bool millerRabinTest(int, int);
     bool isPrime(int, int);
-    bool loadPlaintext();
+    /* bool loadPlaintext(); */
     bool loadCiphertext();
     void saveCiphertext();
-    void savePlaintext();
+    /* void savePlaintext(); */
 };
 #endif

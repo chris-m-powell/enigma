@@ -16,7 +16,7 @@ void Cryptogram::encrypt() {
   transform(Buf.begin(), Buf.end(), Buf.begin(), [&](char i) {
     if ( i >= 'a' && i <= 'z') return Key[i - 'a'];
     if ( i >= 'A' && i <= 'Z') { 
-      char c = Key[i - 'a'] - 32;
+      char c = Key[(i + 32) - 'a'] - 32;
       return c; 
     }
   });
@@ -25,6 +25,6 @@ void Cryptogram::encrypt() {
 void Cryptogram::decrypt() {
   transform(Buf.begin(), Buf.end(), Buf.begin(), [&](char i) {
     if ( i >= 'a' && i <= 'z') return (Key.find(i)) + 'a'; 
-    if ( i >= 'A' && i <= 'Z') return (Key.find(i + 32)) + 'A'; 
+    if ( i >= 'A' && i <= 'Z') return (Key.find(i + 32)) + 'a' - 32; 
   });
 }

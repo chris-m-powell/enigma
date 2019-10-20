@@ -27,16 +27,16 @@ void RSA::keyGen() {
   KeyFlag = 1;
 }
 //------------------------------------------------- 
-bool RSA::loadPlaintext() { 
-  ifstream fin;
-  getFile(getFilename("plaintext"), fin);
-  if (fin.is_open()) {
-    Buf.assign((istreambuf_iterator<char>(fin)), istreambuf_iterator<char>());
-    fin.close();
-    return true; 
-  } 
-  return false;
-}
+/* bool RSA::loadPlaintext() { */ 
+  /* ifstream fin; */
+  /* getFile(getFilename("plaintext"), fin); */
+  /* if (fin.is_open()) { */
+    /* Buf.assign((istreambuf_iterator<char>(fin)), istreambuf_iterator<char>()); */
+    /* fin.close(); */
+    /* return true; */ 
+  /* } */ 
+  /* return false; */
+/* } */
 //------------------------------------------------- 
 void RSA::encode() {
   IntVec.assign(Buf.begin(), Buf.end()-1);
@@ -79,11 +79,11 @@ void RSA::decode() {
   for_each(s.begin(), s.end(), [&](char i){ Buf.push_back(i + '0'); });
 }
 //------------------------------------------------- 
-void RSA::savePlaintext() { 
-  ofstream fout(getFilename("plaintext"));
-  for_each(Buf.begin(), Buf.end(), [&fout](char i) { fout << i; }); 
-  fout.close();
-} 
+/* void RSA::savePlaintext() { */ 
+  /* ofstream fout(getFilename("plaintext")); */
+  /* for_each(Buf.begin(), Buf.end(), [&fout](char i) { fout << i; }); */ 
+  /* fout.close(); */
+/* } */ 
 //------------------------------------------------- 
 int RSA::randInt(int lim) {
   default_random_engine n (chrono::steady_clock::now().time_since_epoch().count()); // provide seed
