@@ -1,29 +1,27 @@
 #include "rsa.h"
 //------------------------------------------------- 
 void RSA::keyGen() {
-  /* int p = randPrime(50); */ 
-  /* int q = randPrime(50); */ 
-  /* int n = p * q; */
-  /* int t = (p - 1) * (q - 1);// totient(p) * totient(q); */
-  /* int e = genExp(n, t); */ 
-  /* int d = modInv(e, t); */
- 
-  /* cout << p << endl; */
-  /* cout << q << endl; */
-  /* cout << n << endl << endl; */
-  int p = 13;
-  int q = 17;
-  int n = p * q;
-  int t = (p - 1) * (q - 1);
-  int e = 7;
-  int d = modInv(e, t);
+  p = randPrime(2, 100); 
+  q = randPrime(2, 50); 
+  n = p * q;
+  t = totient(p)*totient(q); 
+  e = genExp(n, t); 
+  d = modInv(e, t);
+  /* m = 36; */
+  /* c = modExp(m, e, n); */
 
-
-  /* cout << (e * d) % t << endl << endl; */
-  
-  // set kpub=(n,e) and kpriv = d
-  PubKey = make_tuple(n, e);
-  PrivKey = d;
+  cout << "p = " << p << endl;
+  cout << "q = " << q << endl;
+  cout << "n = " << n << endl;
+  cout << "t = " << t << endl;
+  cout << "e = " << e << endl;
+  cout << "d = " << d << endl; //ed = 1 + (k * t)
+  cout << "e * d mod t = " << (e * d) % t << endl;
+  cout << endl;
+  /* cout << "m = " << m << endl; */
+  /* cout << "c = " << c << endl; */ 
+  /* cout << "m = " << modExp(c, d, n) << endl; */
+  sleep(3);
   KeyFlag = 1;
 }
 //------------------------------------------------- 
@@ -47,7 +45,8 @@ void RSA::encode() {
 //------------------------------------------------- 
 void RSA::encrypt() {
   encode();
-  c = modExp(m, get<1>(PubKey), get<0>(PubKey)); // c=m^e (mod n)
+  /* c = modExp(m, get<1>(PubKey), get<0>(PubKey)); // c=m^e (mod n) */
+  c = modExp(m, e, n); // c=m^e (mod n)
   cout << c;
 }
 //------------------------------------------------- 
@@ -69,7 +68,7 @@ bool RSA::loadCiphertext() {
 }
 //------------------------------------------------- 
 void RSA::decrypt() {
-  m = modExp(c, PrivKey, get<0>(PubKey)); // m=c^d (mod n)
+  m = modExp(c, d, n); // m=c^d (mod n)
   cout << m;
   decode();
 }
@@ -85,21 +84,24 @@ void RSA::decode() {
   /* fout.close(); */
 /* } */ 
 //------------------------------------------------- 
-int RSA::randInt(int lim) {
+int RSA::randInt(int l, int u) {
   default_random_engine n (chrono::steady_clock::now().time_since_epoch().count()); // provide seed
-  uniform_int_distribution<int> uid {1,lim};   // generate integers from 0 to lim (lim included);
+  uniform_int_distribution<int> uid {l,u};   // generate integers from l to u (inclusive);
   return uid(n); // generate the random int
 }
 //------------------------------------------------- 
-int RSA::randPrime(int lim) {
-  int p = randInt(lim);
-  while (!isPrime(p, 1)) p = randInt(lim);
+int RSA::randPrime(int l, int u) {
+  int p = randInt(l, u);
+  while (!isPrime(p, 1)) p = randInt(l, u);
   return p;
 }
 //------------------------------------------------- 
 int RSA::genExp(int n, int t) {
-  int e = randInt(t);
-  while (gcd(e, t) != 1) e = randInt(t);
+  if (n > 65537) return e = 65537; // In practice, the prime 65537 is often used.
+  else {
+    e = randInt(2, t - 1);
+    while (gcd(e, t) != 1) e = randInt(2, t - 1);
+  }
   return e;
 }
 //------------------------------------------------- 
@@ -115,12 +117,7 @@ int RSA::modInv(int a, int m) {
     int g, x, y;
     tie(g, x, y) = xgcd(a, m);
     if (g != 1) return 0; 
-    else return x % m;
-    /* if (gcd(b, m) == 1) { */
-        /* int g, u, v; */
-        /* tie(g, u, v) = xgcd(k, totient(m)); */
-        /* if (g == 1) return modExp(b, u, m); */
-    /* } */
+    else return ((x % m) + m) % m; // m is added to force positive
 }
 //------------------------------------------------- 
 int RSA::modExp(int a, unsigned k, int m) {

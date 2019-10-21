@@ -9,19 +9,21 @@
 -------------------------------------------------*/ 
 class RSA: public Cipher<RSA> { //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>' class
   private:
-    int PrivKey; // d
-    tuple<int, int> PubKey; // (n, e)
+    int p, q; // Random prime integers 
+    int n, e; // Public Key
+    int t; // Totient(n)
+    int d; // Private Key
     int m, c;
     vector<int> IntVec;
   public:
-    RSA() { PrivKey = 0; PubKey = make_tuple(0, 0); Name = "RSA"; m = c = 0; }
+    RSA() { Name = "RSA"; }
     void keyGen();
     void encode();
     void decode();
     void encrypt();
     void decrypt();
-    int randInt(int);
-    int randPrime(int);
+    int randInt(int, int);
+    int randPrime(int, int);
     int genExp(int, int);
     int totient(int);
     int gcd(int, int);
@@ -30,9 +32,9 @@ class RSA: public Cipher<RSA> { //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>
     int modInv(int, int);
     bool millerRabinTest(int, int);
     bool isPrime(int, int);
-    /* bool loadPlaintext(); */
     bool loadCiphertext();
     void saveCiphertext();
+    /* bool loadPlaintext(); */
     /* void savePlaintext(); */
 };
 #endif

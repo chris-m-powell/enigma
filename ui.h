@@ -7,8 +7,7 @@
 //          construct menu system
 //    Date: 2019.283 
 //------------------------------------------------- 
-class UI 
-{
+class UI {
   private:
     static int DividerLength;
   public:
