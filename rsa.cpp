@@ -1,9 +1,9 @@
 #include "rsa.h"
 //------------------------------------------------- 
 void RSA::keyGen() {
-  int p, q, t; 
-  tie(p, q) = make_tuple(randPrime(3, 47), randPrime(51, 97));
-  t = (p - 1) * (q - 1);
+  int p = randPrime(3, 47); 
+  int q = randPrime(51, 97);
+  int t = (p - 1) * (q - 1);
   tie(n, e) = genPubKey(p, q, t); 
   d = genPrivKey(e, t);
   KeyFlag = 1;
