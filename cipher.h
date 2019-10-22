@@ -124,7 +124,7 @@ bool Cipher<T>::loadCiphertext() {
 template <class T>
 void Cipher<T>::saveCiphertext() { 
   ofstream fout(getFilename("ciphertext"));
-  for_each(Buf.begin(), Buf.end(), [&fout](char i) { fout << i; }); 
+  for_each(Buf.begin(), Buf.end() - 1, [&fout](char i) { fout << i; }); 
   fout.close();
 } 
 //------------------------------------------------- 

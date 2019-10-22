@@ -9,14 +9,12 @@
 -------------------------------------------------*/ 
 class RSA: public Cipher<RSA> { //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>' class
   private:
-    int p, q; // Random prime integers 
     int n, e; // Public Key
-    int t; // Totient(n)
     int d; // Private Key
     int m, c;
     vector<int> IntVec;
   public:
-    RSA() { Name = "RSA"; }
+    RSA() { Name = "RSA"; n = e = d = m = c = 0; }
     void keyGen();
     void encode();
     void decode();
@@ -24,17 +22,17 @@ class RSA: public Cipher<RSA> { //CRTP: 'Rotn' class inherits from 'Cipher<Rotn>
     void decrypt();
     int randInt(int, int);
     int randPrime(int, int);
-    int genExp(int, int);
-    int totient(int);
+    tuple<int, int> genPubKey(int, int, int);
+    int genPrivKey(int, int);
     int gcd(int, int);
     tuple<int, int, int> xgcd(int, int);
     int modExp(int, unsigned, int);
-    int modInv(int, int);
     bool millerRabinTest(int, int);
     bool isPrime(int, int);
     bool loadCiphertext();
     void saveCiphertext();
     /* bool loadPlaintext(); */
     /* void savePlaintext(); */
+    /* int totient(int); */
 };
 #endif
