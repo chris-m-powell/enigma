@@ -10,9 +10,9 @@ void RSA::keyGen() {
 }
 //------------------------------------------------- 
 void RSA::encode() {
-  IntVec.assign(Buf.begin(), Buf.end()-1);
+  intVec.assign(Buf.begin(), Buf.end()-1);
   string s;
-  for_each(IntVec.begin(), IntVec.end(), [&](int i){ s += to_string(i); });
+  for_each(intVec.begin(), intVec.end(), [&](int i){ s += to_string(i); });
   m = stoi(s);
 }
 //------------------------------------------------- 
@@ -49,20 +49,20 @@ void RSA::decode() {
 }
 //------------------------------------------------- 
 int RSA::randPrime(int l, int u) {
-  int p = randInt(l, u);
-  while (!isPrime(p, 64)) p = randInt(l, u);
+  int p = randint(l, u);
+  while (!isPrime(p, 64)) p = randint(l, u);
   return p;
 }
 //------------------------------------------------- 
-int RSA::randInt(int l, int u) {
+int RSA::randint(int l, int u) {
   default_random_engine n (chrono::steady_clock::now().time_since_epoch().count()); // provide seed
   uniform_int_distribution<int> uid {l,u};   // generate integers from l to u (inclusive);
   return uid(n); // generate the random int
 }
 //------------------------------------------------- 
 tuple<int, int> RSA::genPubKey(int p, int q, int t) {
-  int a = randInt(3, t - 1);
-  while (gcd(a, t) != 1) a = randInt(3, t - 1);
+  int a = randint(3, t - 1);
+  while (gcd(a, t) != 1) a = randint(3, t - 1);
   return make_tuple(p * q, a);
 }
 //------------------------------------------------- 
@@ -92,6 +92,7 @@ tuple<int, int, int> RSA::xgcd(int a, int b) {
   int g, x, y;
   tie(g, x, y) = xgcd(b % a, a);
   return make_tuple(g, (y - (b / a) * x), x);
+
   /* if (b == 0) return make_tuple(a, 1, 0); */
   /* int x, g, v, w; */
   /* tie(x, g, v, w) = make_tuple(1, a, 0, b); */
@@ -106,12 +107,12 @@ bool RSA::isPrime(int n, int k) {
   int d = n - 1;
   while (d % 2 == 0) d /= 2;
   for (int i = 0; i < k; i++)
-    if (!millerRabinTest(d, n)) return false;
+    if (!millerRabintest(d, n)) return false;
   return true;
 }
 //------------------------------------------------- 
-bool RSA::millerRabinTest(int d, int n) {
-  int x = modExp(randInt(2, n - 2), d, n);
+bool RSA::millerRabintest(int d, int n) {
+  int x = modExp(randint(2, n - 2), d, n);
   if (x == 1 || x == n - 1) return true;
   while (d != n - 1) {
     x = (x * x) % n;

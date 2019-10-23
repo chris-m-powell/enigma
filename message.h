@@ -11,7 +11,6 @@
 #include <chrono>   // to provide seed to the default_random_engine
 #include <sstream>
 #include <iterator>
-#include <gmpxx.h>
 using namespace std;
 /*------------------------------------------------- 
   Purpose: Generates strings to be used throughout
